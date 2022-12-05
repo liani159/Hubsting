@@ -1,0 +1,67 @@
+section.p-3{
+    background-color: #F2F2F2;
+}
+ 
+form .form-error{
+    color: red;
+    font-size: .75rem;
+}
+
+.w-50{
+    width:40%!important;
+}
+
+.section.text-light.p-5.text-center.text-sm-start, section.p-3{
+    background-color: #000;
+}
+
+.d-sm-flex, .p-3{
+    color: white;   
+}
+
+.nav-link, .hub{
+    color:#000
+}
+
+body{
+    margin: 0;
+    display:flex;
+
+  flex-direction:column;
+
+  height:100vh;
+}
+
+.po{
+    margin: 15px;
+}
+
+.container-fluid.text-center.text-dark.grande{
+    height: 100%;
+}
+
+/*row*/
+
+.container-fluid.text-center.text-dark.grande .row{
+    height: 100%;
+}
+
+
+
+.col-md-2.l1.border{
+     background-color:#000;
+}
+
+ .col-md-8.mt-4.ms-4.l2{
+    margin-top: 5%!important; ;
+    text-align: center;
+} 
+
+.plans{
+    text-decoration: none;
+    color:white;
+}
+
+.plans:hover{
+    color: #10A19D;
+}
