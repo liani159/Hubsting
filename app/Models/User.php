@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Obj;
+use App\Models\Folder;
+use App\Models\Files;
 
 class User extends Authenticatable
 {
@@ -41,4 +44,26 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //si esegue quando è creato un nuovo utente
+    public static function booted(){
+
+        static::created(function ($user){
+            $obj = $user->objs()->make(['parent_id' => null]);
+            $obj->objectable()->associate($user->folder()->create(['name' => $user->name]));
+            $obj->save();
+        });
+    }
+
+    public function objs(){
+        return $this->hasMany(Obj::class);
+    }
+
+    public function folder(){
+        return $this->hasMany(Folder::class);
+    }
+
+    public function files(){
+        return $this->hasMany(Files::class);
+    }
 }

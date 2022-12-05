@@ -14,7 +14,7 @@
             <a href="#" class="plans">My plan</a> <br><br>
             <a href="#" class="plans">Team</a><br><br>
             <a href="#" class="plans">Contact us</a><br><br>
-            <a href="#" class="plans">Documentation</a><br><br>
+            <a href="" class="plans">Documentation</a><br><br>
             <!-- <a href="#" class="plans">log out</a> <br><br> -->
             
         </div>
@@ -33,8 +33,8 @@
                     <button type="button" class="btn btn-primary">Upload</button> 
                     </div>
                 </div>
-                <div class="row mb-2 p-2  border rounded table-info">
-                    <div class="col md-12">
+                <div class="row mb-2 p-2 border rounded table-info">
+                    <div class="col md-12 overflow-auto">
                         <table class="table ">
                             <thead>
                                 <tr>
@@ -44,27 +44,40 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">Liani</th>
-                                        <td>&minus;</td>
-                                        <td>02/12/2022</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Norton</th>
-                                        <td>&minus;</td>
-                                        <td>03/12/2022</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Kirby</th>
-                                        <td>&minus;</td>
-                                        <td>04/12/2022</td>
-                                </tr>
+                                @foreach($obj->children as $child)
+                                    <tr>
+                                        <!-- <i class="bi bi-files-primary p-1"> </i> -->
+                                        <th scope="row">                                      
+                                            @if($child->objectable_type === 'folder')
+                                                <a href="{{route('home.user', ['uuid' => $child->uuid])}}"><i class="bi bi-folder p-1"></i>{{$child->objectable->name}}</a>
+                                            @else 
+                                                <a href=""><i class="bi bi-files p-1"> </i>{{$child->objectable->name}}</a>
+                                            @endif
+                                        </th>
+                                            <td>
+                                                @if($child->objectable_type === 'folder')
+                                                    &minus;
+                                                @else
+                                                    {{$child->objectable->size}}
+                                                @endif
+                                            </td>
+                                            <td>{{$child->objectable->created_at}}</td>
+                                            <td> <button type="button" class="btn btn-secondary">Rename</button></td>
+                                            <td> <button type="button" class="btn btn-danger">Delete</button></td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
+                        @if($obj->children->count()===0)
+                            <div class="empty">
+                                This folder is empty
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
-            <p>Only for users</p>
+            <br>
+            <p> Only for users view</p>
         </div>
     </div>
 </div>
