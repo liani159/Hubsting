@@ -246,7 +246,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'lian','lianimopi@outlook.fr',1,NULL,'$2y$10$E19dOdIq1xc15NEFHTotHOy2fqwuDOhjJx4HeL/tGvuEFjTLSxJJm',NULL,NULL,'2022-12-05 14:36:31','2022-12-05 14:36:31'),(2,'liani','lianimopiz@gmail.com',0,NULL,'$2y$10$uPVT/Y9uv..XMVyp6phkg.4acXbHHXLGRcqlI2F6VkfNANDbQHLqS',NULL,NULL,'2022-12-05 14:38:03','2022-12-05 14:38:03'),(4,'genie','medjialeu.davyjordan@edu.unife.it',0,NULL,'$2y$10$WSJMXk0Bev8bUHKmo3Q1M.2oRWy1buhRQ2smC/5y2JPfamTxKwE5e',NULL,NULL,'2022-12-06 10:34:52','2022-12-06 10:34:52');
+INSERT INTO `users` VALUES (1,'lian','lianimopi@outlook.fr',1,NULL,'$2y$10$E19dOdIq1xc15NEFHTotHOy2fqwuDOhjJx4HeL/tGvuEFjTLSxJJm',NULL,NULL,'2022-12-05 14:36:31','2022-12-05 14:36:31'),(2,'liani','lianimopiz@gmail.com',0,NULL,'$2y$10$uPVT/Y9uv..XMVyp6phkg.4acXbHHXLGRcqlI2F6VkfNANDbQHLqS',NULL,NULL,'2022-12-05 14:38:03','2022-12-05 14:38:03'),(4,'genie','medjialeu.davyjordan@edu.unife.it',1,NULL,'$2y$10$WSJMXk0Bev8bUHKmo3Q1M.2oRWy1buhRQ2smC/5y2JPfamTxKwE5e',NULL,NULL,'2022-12-06 10:34:52','2022-12-06 10:34:52');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -259,4 +259,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-06 12:40:22
+-- Dump completed on 2022-12-06 12:50:16
