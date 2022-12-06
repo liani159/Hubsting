@@ -28,12 +28,6 @@ class HomeController extends Controller
     }
 
     public function admin_home(Request $request){
-
-        $obj = Obj::where('uuid', $request->get('uuid', Obj::whereNull('parent_id')
-        ->first()->uuid))
-        ->firstOrFail();
-        dd($obj->children);
-
-        return view('admins_views.index', ['obj' => $obj]);
+        return view('admins_views.index');
     }
 }
