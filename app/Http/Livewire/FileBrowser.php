@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\User;
+use App\Models\Obj;
 
 class FileBrowser extends Component
 {
@@ -14,16 +15,60 @@ class FileBrowser extends Component
         'name' => '',
     ] ;
 
+    //contiene l'id del folder a rinominare
+    public $renamingObject;
+    //per controllare quando lo stato di renaming object cambia
+    public $renamingObjectState = [
+        'name' => '',
+    ];
+     
+    //updating: parola chiave
+    public function updatingRenamingObject($id){
+
+        if($id == null){
+            $this->renamingObjectState = [
+                'name' => '',
+            ];
+            return ;
+        }
+
+        if($obj = Obj::where('user_id',auth()->user()->id)->find($id)){
+            $this->renamingObjectState = [
+                'name' => $obj->objectable->name
+            ];
+        }
+    }
+
+
+    //per rinominare
+    public function renameObject(){
+        $this->validate([
+            'renamingObjectState.name' => 'required|max:255'
+        ]);
+
+        obj::where('user_id',auth()->user()->id)->find($this->renamingObject)
+        ->objectable->update($this->renamingObjectState);
+
+        $this->obj = $this->obj->fresh(); 
+        $this->renamingObject = null;
+    }
+
+
+
+
     public function render()
     {
         return view('livewire.file-browser');
     }
+
+
 
     public function getUserIdProperty(){
 
         return auth()->user();
     }
     
+
 
     public function createFolder(){
 

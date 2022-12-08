@@ -50,7 +50,7 @@
                                         <form wire:submit.prevent="createFolder" class="d-flex" role="search">   
                                             
                                             <input wire:model="newFolderState.name"  class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> 
-                                            <button type="button" class="btn btn-primary">Create</button> 
+                                            <button type="submit" class="btn btn-primary">Create</button> 
                                             <button wire:click = "$set('creatingNewFolder', false)" type="button" class="btn btn-secondary">Cancel</button> 
                                         </form>
                                     </td>
@@ -60,11 +60,21 @@
                             @foreach($obj->children as $child)
                                 <tr>
                                     <!-- <i class="bi bi-files-primary p-1"> </i> -->
-                                    <th scope="row">                                      
-                                        @if($child->objectable_type === 'folder')
-                                            <a href="{{route('home.user', ['uuid' => $child->uuid])}}"><i class="bi bi-folder p-1"></i>{{$child->objectable->name}}</a>
-                                        @else 
-                                            <a href=""><i class="bi bi-files p-1"> </i>{{$child->objectable->name}}</a>
+                                    <th scope="row">    
+                                    <!-- {{json_encode($renamingObjectState) }} -->
+                                        @if($renamingObject === $child->id ) 
+                                            <form wire:submit.prevent="renameObject" class="d-flex" role="search">   
+                                                
+                                                <input wire:model="renamingObjectState.name"  class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> 
+                                                <button type="submit" class="btn btn-primary">Rename</button> 
+                                                <button wire:click = "$set('renamingObject', '')" type="button" class="btn btn-secondary">Cancel</button> 
+                                            </form>
+                                        @else                                
+                                            @if($child->objectable_type === 'folder')
+                                                <a href="{{route('home.user', ['uuid' => $child->uuid])}}"><i class="bi bi-folder p-1"></i>{{$child->objectable->name}}</a>
+                                            @else 
+                                                <a href=""><i class="bi bi-files p-1"> </i>{{$child->objectable->name}}</a>
+                                            @endif
                                         @endif
                                     </th>
                                         <td>
@@ -75,7 +85,7 @@
                                             @endif
                                         </td>
                                         <td>{{$child->objectable->created_at}}</td>
-                                        <td> <button type="button" class="btn btn-secondary">Rename</button></td>
+                                        <td> <button wire:click = "$set('renamingObject', {{$child->id}})" type="button" class="btn btn-secondary">Rename</button></td>
                                         <td> <button type="button" class="btn btn-danger">Delete</button></td>
                                 </tr>
                             @endforeach
