@@ -28,6 +28,7 @@ Route::post('/validate',[UserController::class, 'validate_registration'])->name(
 Route::post('/validate_login',[UserController::class, 'validate_login'])->name('user.log');
 Route::get('/logout',[UserController::class, 'logout'])->name('user.logout');
 
+
 //Middleware for UserAccess
 //user
 Route::middleware(['auth', 'user-access:user'])->group(

@@ -47,7 +47,8 @@ class User extends Authenticatable
 
     //si esegue quando è creato un nuovo utente
     public static function booted(){
-
+        
+            //creamo un oggetto che sara legato al folder radice di ciascun nuovo user
         static::created(function ($user){
             $obj = $user->objs()->make(['parent_id' => null]);
             $obj->objectable()->associate($user->folder()->create(['name' => $user->name]));

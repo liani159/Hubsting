@@ -18,13 +18,21 @@ class HomeController extends Controller
 
     public function user_home(Request $request){
         //for current user
-        $obj = Obj::where('user_id',$request->user()->id)->where('uuid', $request->get('uuid', Obj::where('user_id',$request->user()->id)->whereNull('parent_id')
+        /*recupiamo l'oggetto di base creato alla creazione dell'user
+        che ci permetera di navigare nei folder*/ 
+        $obj = Obj::with('children.objectable')->where('user_id',$request->user()->id)
+        ->where('uuid', $request->get('uuid', Obj::where('user_id',$request->user()->id)
+        ->whereNull('parent_id')
         ->first()->uuid))
         ->firstOrFail();
 
         //dd($obj->children);
 
-        return view('users_views.index', ['obj' => $obj]);
+        //return view('users_views.index', ['obj' => $obj]);
+
+        //for return with path of ancestors
+        return view('users_views.index', ['obj' => $obj,
+        'ancestors' => $obj->ancestorsAndSelf]);
     }
 
     public function admin_home(Request $request){

@@ -10,6 +10,8 @@ use Illuminate\Support\Str;
 class Obj extends Model
 {
     use HasFactory;
+    use \Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
+
 
     protected $fillable = [
         'parent_id',
@@ -26,7 +28,22 @@ class Obj extends Model
         });
     }
 
-    public function children(){
+    /* public function children(){
         return $this->hasMany(Obj::class, 'parent_id', 'id');
+    } */
+
+    /* public function parent(){
+        return $this->belongsTo(Obj::class, 'parent_id', 'id');
     }
+
+    public function ancestor(){
+        $ancestor = $this;
+        $ancestors = collect();
+
+        while($ancestor->parent){
+            $ancestor = $ancestor->parent;
+            $ancestors->push($ancestor);
+        }
+        return $ancestors;
+    } */
 }
