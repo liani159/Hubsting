@@ -5,15 +5,20 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\User;
 use App\Models\Obj;
+use Livewire\WithFileUploads;
 
 class FileBrowser extends Component
 {
+    use WithFileUploads;
+
+    public $upload;
     public $obj;
     public $ancestors;
     public $creatingNewFolder = false;
     public $newFolderState = [
         'name' => '',
     ] ;
+    public $showFileUploadForm = false;
 
     //contiene l'id del folder a rinominare
     public $renamingObject;
@@ -21,7 +26,31 @@ class FileBrowser extends Component
     public $renamingObjectState = [
         'name' => '',
     ];
-     
+        
+    public function updatedUpload($upload){
+        {
+            $obj = $this->UserId->objs()->make(['parent_id' => $this->obj->id
+            ]);
+
+            $obj->objectable()->associate(
+                $this->UserId->files()
+                ->create([
+                    'name' => $upload->getClientOriginalName(),
+                    'size' => $upload->getSize(),
+                    'path' => $upload->storePublicly(
+                        auth()->user()->name, [
+                            'disk' => 'local'
+                        ]
+                    )
+                ])
+                );
+                $obj->save();
+                $this->obj = $this->obj->fresh();
+            /* $upload->storePublicly(auth()->user()->name, ['disk' => 'local']); */
+        }
+    }
+
+
     //updating: parola chiave
     public function updatingRenamingObject($id){
 
