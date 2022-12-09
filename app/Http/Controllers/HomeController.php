@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Obj;
 use App\Models\User;
+use App\Models\Files;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -37,5 +39,10 @@ class HomeController extends Controller
 
     public function admin_home(Request $request){
         return view('admins_views.index');
+    }
+
+    public function download(Files $file){
+        //dd($file);
+         return Storage::disk('local')->download($file->path, $file->name);
     }
 }

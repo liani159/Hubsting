@@ -34,6 +34,7 @@ Route::get('/logout',[UserController::class, 'logout'])->name('user.logout');
 Route::middleware(['auth', 'user-access:user'])->group(
     function(){
         Route::get('/user/home', [HomeController::class, 'user_home'])->name('home.user');
+        Route::get('/files/{file}', [HomeController::class, 'download'])->name('download');
     }
 );
 

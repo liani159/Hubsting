@@ -19,6 +19,7 @@ class FileBrowser extends Component
         'name' => '',
     ] ;
     public $showFileUploadForm = false;
+    public $confirmObjectDeletion;
 
     //contiene l'id del folder a rinominare
     public $renamingObject;
@@ -27,6 +28,15 @@ class FileBrowser extends Component
         'name' => '',
     ];
         
+    //delete object
+    public function deleteObject(){
+        obj::where('user_id',auth()->user()->id)->find($this->confirmObjectDeletion)->delete();
+        $this->confirmObjectDeletion = null;
+
+        $this->obj = $this->obj->fresh(); 
+    }
+
+
     public function updatedUpload($upload){
         {
             $obj = $this->UserId->objs()->make(['parent_id' => $this->obj->id

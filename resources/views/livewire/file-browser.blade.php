@@ -28,7 +28,7 @@
             <div class="row mb-2 p-2 border rounded table-info">
                 @foreach($ancestors as $an)
                     <div class="text-primary mx-auto">
-                        <a href="{{route('home.user', ['uuid' =>$an->uuid])}}">
+                        <a href="{{route('home.user', ['uuid' => $an->uuid])}}">
                             {{$an->objectable->name}}    @if(!$loop->last)> @endif
                         </a> 
                     </div>
@@ -73,7 +73,7 @@
                                             @if($child->objectable_type === 'folder')
                                                 <a href="{{route('home.user', ['uuid' => $child->uuid])}}"><i class="bi bi-folder p-1"></i>{{$child->objectable->name}}</a>
                                             @else 
-                                                <a href=""><i class="bi bi-files p-1"> </i>{{$child->objectable->name}}</a>
+                                                <a href="{{route('download', $child->objectable)}}"><i class="bi bi-files p-1"> </i>{{$child->objectable->name}}</a>
                                             @endif
                                         @endif
                                     </th>
@@ -81,12 +81,13 @@
                                             @if($child->objectable_type === 'folder')
                                                 &minus;
                                             @else
-                                                {{$child->objectable->size}}
+                                                {{$child->objectable->sizeForHumans()}}
                                             @endif
                                         </td>
                                         <td>{{$child->objectable->created_at}}</td>
                                         <td> <button wire:click = "$set('renamingObject', {{$child->id}})" type="button" class="btn btn-secondary">Rename</button></td>
-                                        <td> <button type="button" class="btn btn-danger">Delete</button></td>
+                                        <td> <button wire:click = "$set('confirmObjectDeletion', {{$child->id}})" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete">Delete</button></td>
+                                        
                                 </tr>
                             @endforeach
                         </tbody>
@@ -103,9 +104,28 @@
         <p> Only for users view</p>
     </div>
 
+<!-- deletion -->
+<!-- Button trigger modal -->
+<div wire:ignore.self class="modal fade" id="delete">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" >Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               Do you really want to delete this ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button wire:click = "deleteObject" type="button" data-bs-dismiss="modal" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- fine deletion -->
 
-
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div wire:ignore.self class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
