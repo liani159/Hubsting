@@ -9,8 +9,8 @@
 
 <div class="container-fluid text-center text-dark grande">
 
-        <!-- livewire component che contiene la vista dell'user -->
-        <livewire:file-browser :obj="$obj" :ancestors="$ancestors">
+        <!-- livewire component che contiene la vista della team selezionata -->
+        <livewire:file-team-browser :obj="$obj" :ancestors="$ancestors" :team_id="$team_id">
     
 </div>
 @endsection

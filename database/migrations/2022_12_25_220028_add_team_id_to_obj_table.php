@@ -13,14 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('folders', function (Blueprint $table) {
-            $table->id();
-            $table->uuid('uuid');
-            $table->string('name');
-            $table->foreignId('user_id')->nullable();
-            $table->foreignId('team_id')->nullable()->contrained('teams');
-            //$table->bigInteger('size');
-            $table->timestamps();
+        Schema::table('objs', function (Blueprint $table) {
+            $table->foreignId('team_id')->nullable();
         });
     }
 
@@ -31,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('folders');
+        Schema::table('objs', function (Blueprint $table) {
+            $table->dropColumn('team_id');
+        });
     }
 };

@@ -39,13 +39,15 @@ body{
 .container-fluid.text-center.text-dark.grande{
     height: 100%;
 }
-
 /*row*/
 
 .container-fluid.text-center.text-dark.grande .row{
     height: 100%;
 }
 
+.row.menu{
+    height: 100%;
+}
 
 
 .col-md-2.l1.border{
@@ -64,4 +66,18 @@ body{
 
 .plans:hover{
     color: #10A19D;
+}
+.teams{
+    text-decoration: none;
+    color:#F2F2F2;
+}
+
+.back{ 
+    text-decoration: none;
+    color:#000;
+}
+
+a.cump{
+    text-decoration: none;
+    color:#3C2A21;
 }

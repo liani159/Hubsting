@@ -10,6 +10,7 @@
                 
     </div>
 
+    <!-- <h2 class="float-start"><a class="back" href="{{route('home.team', ['team_id' => $team_id])}}">back</a></h2> -->
     <div class="col-md-8 mt-4 ms-4 l2">
         <div class="container">
             <div class="row mb-2 p-2 border rounded folder">
@@ -28,7 +29,7 @@
             <div class="row mb-2 p-2 border rounded table-info">
                 @foreach($ancestors as $an)
                     <div class="text-primary">
-                        <a class = "mx-auto float-start cump" href="{{route('home.user', ['uuid' => $an->uuid])}}">
+                        <a class = "mx-3 float-start cump" href="{{route('home.team', ['team_id' => $team_id, 'uuid' => $an->uuid])}}">
                             {{$an->objectable->name}}    @if(!$loop->last)> @endif
                         </a> 
                     </div>
@@ -71,7 +72,7 @@
                                             </form>
                                         @else                                
                                             @if($child->objectable_type === 'folder')
-                                                <a href="{{route('home.user', ['uuid' => $child->uuid])}}"><i class="bi bi-folder p-1"></i>{{$child->objectable->name}}</a>
+                                                <a href="{{route('home.team', ['team_id' => $team_id, 'uuid' => $child->uuid])}}"><i class="bi bi-folder p-1"></i>{{$child->objectable->name}}</a>
                                             @else 
                                                 <a href="{{route('download', $child->objectable)}}"><i class="bi bi-files p-1"> </i>{{$child->objectable->name}}</a>
                                             @endif
@@ -106,75 +107,52 @@
 
 <!-- deletion -->
 <!-- Button trigger modal -->
-<div wire:ignore.self class="modal fade" id="delete">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title" >Modal title</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div wire:ignore.self class="modal fade" id="delete">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title" >Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Do you really want to delete this ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button wire:click = "deleteObject" type="button" data-bs-dismiss="modal" class="btn btn-danger">Delete</button>
+                </div>
             </div>
-            <div class="modal-body">
-               Do you really want to delete this ?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button wire:click = "deleteObject" type="button" data-bs-dismiss="modal" class="btn btn-danger">Delete</button>
+        </div>
+    </div>
+<!-- fine deletion -->
+
+    <div wire:ignore.self class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Upload File</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" wire:ignore
+                        x-data="{
+                            initFilepond(){
+                            const pond = FilePond.create(this.$refs.filepond, {
+                                server:{
+                                        process:(fieldName, file, metdata, load, error, progress, abort,
+                                        transfer, options) => {
+                                            @this.upload('upload', file, load, error, progress)
+
+                                        }
+                                }
+                            })
+                            }
+                            }"
+                        x-init="initFilepond">
+
+                    <div><input type="file" x-ref="filepond" multiple></div>
+        
+                </div>
             </div>
         </div>
     </div>
 </div>
-<!-- fine deletion -->
-
-<div wire:ignore.self class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Upload File</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" wire:ignore
-                    x-data="{
-                        initFilepond(){
-                          const pond = FilePond.create(this.$refs.filepond, {
-                            server:{
-                                    process:(fieldName, file, metdata, load, error, progress, abort,
-                                    transfer, options) => {
-                                        @this.upload('upload', file, load, error, progress)
-
-                                    }
-                            }
-                          })
-                        }
-                        }"
-                    x-init="initFilepond">
-                <!--text here -->
-                <!-- <input type="file" 
-                class="filepond"
-                name="filepond" 
-                multiple 
-                data-allow-reorder="true"
-                data-max-file-size="3MB"
-                data-max-files="3"> -->
-
-                <div><input type="file" x-ref="filepond" multiple></div>
-                
-                    
-            </div>
-            <!-- <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button> 
-            </div> -->
-        </div>    
-    </div>
-  </div>
-</div>
-
-<!-- wire:ignore
-                    x-data="{
-                        initFilepond(){
-                          const pond = FilePond.create($this.$refs.filepond, {
-                            //
-                          })
-                        }
-                        }"
-                    x-init="initFilepond" -->

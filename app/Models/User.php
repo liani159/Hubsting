@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\Obj;
 use App\Models\Folder;
 use App\Models\Files;
+use App\Models\Team;
 
 class User extends Authenticatable
 {
@@ -42,6 +43,7 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
+        'created_at'  => 'date:d/m/Y',
         'email_verified_at' => 'datetime',
     ];
 
@@ -66,5 +68,9 @@ class User extends Authenticatable
 
     public function files(){
         return $this->hasMany(Files::class);
+    }
+
+    public function teams(){
+        return $this->belongsToMany(Team::class);
     }
 }
