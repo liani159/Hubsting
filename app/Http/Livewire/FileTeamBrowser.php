@@ -44,7 +44,7 @@ class FileTeamBrowser extends Component
         $this->obj = $this->obj->fresh(); 
     }
 
-
+    //path name file to redefine here
     public function updatedUpload($upload){
         {
             $obj = $this->TeamId->objs()->make(['parent_id' => $this->obj->id
@@ -110,7 +110,7 @@ class FileTeamBrowser extends Component
 
     public function createFolder(){
 
-        //dd($this->TeamId);
+        //dd($this->TeamId->name);
         $obj = $this->TeamId->objs()->make(['parent_id' => $this->obj->id]);
         $obj->objectable()->associate($this->TeamId->folder()->create($this->newFolderState));
         

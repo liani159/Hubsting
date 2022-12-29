@@ -28,6 +28,7 @@ body{
     display:flex;
 
   flex-direction:column;
+  background: white;
 
   height:100vh;
 }
@@ -81,3 +82,51 @@ a.cump{
     text-decoration: none;
     color:#3C2A21;
 }
+
+
+/* test side_nav */
+
+#side_nav{
+    background: #000;
+    min-width: 250px;
+    max-width: 250px;
+    
+}
+
+.content{
+    min-height: 100vh;;
+    width: 100%;
+}
+
+
+
+.grande{
+    min-height: 100vh;;
+    width: 100%;
+    padding-left:0;
+    padding-right:0;
+}
+
+.sidebar li a{
+    color: #F2F2F2;
+    margin-top: 8px;
+}
+
+.sidebar ul li {
+    margin: 17px;
+}
+
+@media(max-width: 767px){
+#side_nav{
+    margin-left:-260px;
+    position: fixed;
+    min-height: 100vh;
+    z-index: 1;
+    transition: all 0.2s;
+}
+#side_nav.active{
+   margin-left :0;
+}
+}
+
+/* fine side_nav */
