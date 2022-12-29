@@ -9,9 +9,9 @@
             <button class="btn d-md-none d-block close-btn px-1 py-0 text-white fs-4"><i class="bi bi-list"></i></button>  
         </div>
         <ul class="list-unstyled px-2 ">
-            <li class=""><a href="#" class="text-decoration-none plans">My plan</a> <i class="bi bi-credit-card text-white"></i></li>
+            <li class=""><a href="{{route('myPlan')}} class="text-decoration-none plans">My plan</a> <i class="bi bi-credit-card text-white"></i></li>
             <li class=""><a href="{{route('teams.index')}}" class="text-decoration-none plans">Team <i class="bi bi-share text-white"></i></a> </li>
-            <li class=""><a href="#" class="text-decoration-none plans">Contact us <i class="bi bi-person-lines-fill text-white"></i></a> </li>
+            <li class=""><a href="mailto:zeusfarm64@gmail.com" class="text-decoration-none plans">Contact us <i class="bi bi-person-lines-fill text-white"></i></a> </li>
             <li class=""><a href="#" class="text-decoration-none plans">Documentation <i class="bi bi-bookmark text-white"></i></a> </li>
         </ul>
     </div>

@@ -44,8 +44,10 @@ Route::middleware(['auth', 'user-access:user'])->group(
         Route::resource('teams', TeamController::class);
         Route::resource('members', MemberController::class);
         Route::get('/members/delete/{id}/{id_team}', [MemberController::class, 'destroy'])->name('deleteMember');
-        /*Route::get('/members/{team}', [MemberController::class, 'members'])->name('members');
-        Route::POST('/members/add', [TeamController::class, 'addMember'])->name('addMember');
+        Route::get('/plan', [UserController::class, 'asPaid'])->name('myPlan');
+        Route::get('/plan/sub/{value}', [UserController::class, 'subscribe'])->name('subscribe');
+        Route::get('/plan/unsub/{value}', [UserController::class, 'unsubscribe'])->name('unsubscribe');
+        /*Route::POST('/members/add', [TeamController::class, 'addMember'])->name('addMember');
         Route::POST('/members/delete/{id}', [TeamController::class, 'deleteMember'])->name('deleteMember'); */
         
     }

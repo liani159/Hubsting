@@ -77,4 +77,35 @@ class UserController extends Controller
 
         return redirect('/');
     }
+
+
+    public function asPaid(){
+        
+        return view('users_views.my_plan');
+    }
+    
+    public function subscribe(Request $request){
+        //dd($request->value);
+        $user = User::find(auth()->user()->id);
+        //User::where('id', auth()->user()->id)->update(['as_paid', $request->value]);
+        $user->update(['as_paid' => true]);
+        return response()->json([
+            'message' => 'ok!',
+            'data' => $user->as_paid
+        ], 200);
+        
+    }
+
+
+    public function unsubscribe(Request $request){
+        //dd($request->value);
+        $user = User::find(auth()->user()->id);
+        //User::where('id', auth()->user()->id)->update(['as_paid', $request->value]);
+        $user->update(['as_paid' => false]);
+        return response()->json([
+            'message' => 'ok!',
+            'data' => $user->as_paid
+        ], 200);
+        
+    }
 }

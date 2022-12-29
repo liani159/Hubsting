@@ -47,17 +47,23 @@ class TeamController extends Controller
         $nameTeam = $request->name;
         $ownerId = Auth::user()->id;
 
+        if(auth()->user()->as_paid){
+            $newTeam = Team::create(['name' => $nameTeam, 'owner_id' => $ownerId]);
+        //recupero l id della nuova team creata
+            $teamId = $newTeam->id;
+            //associazione
+            DB::table('team_user')->insert([
+                ['user_id' => $ownerId, 'team_id' => $teamId]
+            ]);
+            
 
-       $newTeam = Team::create(['name' => $nameTeam, 'owner_id' => $ownerId]);
-       //recupero l id della nuova team creata
-        $teamId = $newTeam->id;
-        //associazione
-        DB::table('team_user')->insert([
-            ['user_id' => $ownerId, 'team_id' => $teamId]
-        ]);
-        
+            return redirect()->route('teams.index');
+        }else{
+            return redirect()->route('teams.index')->with(['message' => 'You have to update
+             your plan before to acces this functionality']);
+        }
 
-        return redirect()->route('teams.index');
+       
     }
 
     /**
@@ -71,7 +77,7 @@ class TeamController extends Controller
         //dd($team->id);
         $members = Team::find($team->id);
         //dd($teams->teams);
-        return view('users_views.members', ['members' => $members, 'id_team' =>$team->id]);
+        return view('users_views.members', ['members' => $members, 'id_team' =>$team->id, 'owner_id' => $team->owner_id]);
     }
 
     /**
