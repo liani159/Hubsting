@@ -39,6 +39,26 @@ class FileBrowser extends Component
 
     public function updatedUpload($upload){
         {
+            /* if(auth()->user()->as_paid){
+                //eseguiamo normalmente
+
+            }else if(! auth()->user()->as_paid && (auth()->user()->num_upload <=5)){
+               //altrimenti puo fare la upload solo 5 volte
+               //aumentiamo il numero di upload
+
+               
+            }else{
+                //se ha superato il suo numero massimo di upload, chiediamo all'utente
+                //di passara al piano superiore (a pagamento: subscription).
+                session()->flash('message', 'Post successfully updated.');
+            }
+            
+            //nella view se ha superato il suo numero di upload per il piano gratuito
+                <div class="alert alert-success">
+                {{ session('message') }}
+                </div>
+            */
+
             $obj = $this->UserId->objs()->make(['parent_id' => $this->obj->id
             ]);
 
@@ -48,7 +68,7 @@ class FileBrowser extends Component
                     'name' => $upload->getClientOriginalName(),
                     'size' => $upload->getSize(),
                     'path' => $upload->storePublicly(
-                        auth()->user()->name, [
+                        auth()->user()->name.auth()->user()->id, [
                             'disk' => 'local'
                         ]
                     )

@@ -44,19 +44,21 @@ class FileTeamBrowser extends Component
         $this->obj = $this->obj->fresh(); 
     }
 
-    //path name file to redefine here
+    // controllo sul numero di upload a fare qua dopo
     public function updatedUpload($upload){
         {
             $obj = $this->TeamId->objs()->make(['parent_id' => $this->obj->id
             ]);
 
+            $team = Team::where('id', $this->team_id)->first();
+            //dd($team->name);
             $obj->objectable()->associate(
                 $this->TeamId->files()
                 ->create([
                     'name' => $upload->getClientOriginalName(),
                     'size' => $upload->getSize(),
                     'path' => $upload->storePublicly(
-                        auth()->user()->name, [
+                        $team->name. $this->team_id, [
                             'disk' => 'local'
                         ]
                     )

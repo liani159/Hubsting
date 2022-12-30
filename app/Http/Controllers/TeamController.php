@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Team;
 use App\Models\User;
+use App\Models\Obj;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -98,9 +99,20 @@ class TeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        
+        $id = $request->id_team;
+        $name = $request->name;
+        //dd($name);
+        $team = Team::find($id);
+        $team->update(['name' => $name]);
+        
+        return response()->json([
+            'message' => 'ok!',
+            'data' => $name
+        ], 200);
+
     }
 
     /**
@@ -109,9 +121,23 @@ class TeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $id_team = $request->id_team;
+        $owner_id = $request->owner_id;
+
+        $team = Team::find($id_team);
+
+        $obj = Obj::where('team_id', $id_team)->whereNull('parent_id')->first();
+
+        $obj->delete();
+        $team->delete(); 
+
+        return response()->json([
+            'message' => 'ok!',
+            'data' => $id_team
+        ], 200);
+
     }
 
     /* public function members(Team $team){

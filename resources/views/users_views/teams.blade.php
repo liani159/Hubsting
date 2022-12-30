@@ -100,20 +100,21 @@
                     <thead>
                         <tr>
                         <th scope="col">Team Name</th>
-                        <th scope="col">Owner_id</th>
+                        <th scope="col">Owner_name</th>
                         <th scope="col">Create at</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($teams->teams as $t)
                         
-                            <tr>
-                                <th scope="row"> <a href="{{route('home.team',['team_id' => $t->id ])}}">{{$t->name}}</a> </th>
-                                <td>{{$t->owner_id}}</td>
+                            <tr data-id="{{ $t->id }}">
+                                <th scope="row"> <a href="{{route('home.team',['team_id' => $t->id ])}}" class="nom-{{$t->id}}">{{$t->name}}</a> </th>
+                                <td> {{$t->users[0]->name}}</td>
                                 <td>{{$t->created_at->format('d/m/Y')}}</td>
                                 <td><button type="button"class="btn btn-secondary"><a class="teams" href="{{route('teams.show', ['team' => $t->id])}}">Members </a></button></td>
-                                <td> <button type="button" class="btn btn-info">Rename</button> </td>
-                                <td><button type="button" class="btn btn-danger">Delete</button></td>
+                                <!-- <td> <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#cambia">Rename</button> -->
+                                <td> <button type="button" data-name = "{{$t->name}}" data-id = "{{$t->id}}" class="btn btn-info cambia" >Rename</button>                    
+                                <td><input type="button"  data-id_team ="{{$t->id}}" data-owner_id = "{{$t->owner_id}}" class="btn btn-danger delet" value="Delete"/></td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -121,7 +122,78 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Modal per rinominare una team -->
+    <div class="modal fade" id="cambiamodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Rename Team</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="{{route('update')}}" method="post" id="editForm">
+              @csrf
+              <label for="name">Team name</label>
+              <input type="text" name ="name" id="nome" placeholder="nuovo nome">
+              <input type="hidden" name ="id" id="idd">
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </form>
+          </div>
+        </div>
+      </div> 
+</div>
     <script>
+
+        //modal edit
+        $(document).on('click', '.cambia', function(e){
+          e.preventDefault();
+
+          let id = $(this).data('id');
+          let name = $(this).data('name');
+
+          $('#cambiamodal').modal('show');
+          $('#nome').val(name);
+          $('#idd').val(id);
+        });
+
+        //on submit modal, update the name
+        $('#editForm').on('submit', function(e){
+          e.preventDefault();
+
+            let name = $('#nome').val();
+            let id_team = $('input[name="id"]').val();
+            let token = $('input[name="_token"]').val();
+         
+          /* console.log(id_team);
+          console.log(name);
+          console.log(token);
+ */
+          $.ajax({
+            url:"{{route('update')}}",
+            type:"POST",
+            dataType: 'json',
+            data: {
+                'name' : name,
+                'id_team' : id_team,
+                '_token': token    
+            },
+            success: function(response){
+                
+              $('.nom-'+id_team).text(response.data);
+              $('#cambiamodal').modal('hide');
+              console.log(response.data);
+            }, error: function(response, status){
+                console.log('error');
+            }
+          })
+        });
+
         $(".sidebar ul li").on('click', function(e){
             //e.preventDefault();
             $(".sidebar ul li.active").removeClass('active');
@@ -135,6 +207,41 @@
         $(".close-btn").on("click", function(){
             $(".sidebar").removeClass('active');
         });
+
+
+      //ajax to cancel a team and old object relate to
+      $(document).on('click', '.delet', function(e){
+        e.preventDefault();
+
+        let id_team = $(this).data("id_team");
+        let owner_id = $(this).data("owner_id");
+        let token = $('input[name="_token"]').val();
+
+        //console.log(id_team);
+        //console.log(owner_id);
+        if(confirm("Do you really want to delete this team ?")){
+          $.ajax({
+              url:"{{route('deleteTeam', ['owner_id' =>"+owner_id+", 'id_team' =>"+id_team+"])}}",
+              type:"POST",
+              dataType: 'json',
+              data: {
+                  'id_team' : id_team,
+                  'owner_id' : owner_id,   
+                  '_token': token 
+              },
+              success: function(response){
+                  
+              $('tr[data-id="'+response.data+'"]').remove();
+    
+                //console.log(response.data);
+              }, error: function(response, status){
+                  console.log('error');
+              }
+            })
+          }
+
+      });
+
     </script>
    
 </div>

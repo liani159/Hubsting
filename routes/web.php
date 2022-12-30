@@ -42,6 +42,11 @@ Route::middleware(['auth', 'user-access:user'])->group(
         Route::get('/user/home/team/{team_id}', [MainController::class, 'team_home'])->name('home.team');
         Route::get('/files/{file}', [MainController::class, 'download'])->name('download');
         Route::resource('teams', TeamController::class);
+        //update team
+        Route::post('teams/edit', [TeamController::class, 'update'])->name('update');
+        //Delete team
+        Route::post('teams/delete/{owner_id}/{id_team}', [TeamController::class, 'destroy'])->name('deleteTeam');
+        
         Route::resource('members', MemberController::class);
         Route::get('/members/delete/{id}/{id_team}', [MemberController::class, 'destroy'])->name('deleteMember');
         Route::get('/plan', [UserController::class, 'asPaid'])->name('myPlan');
