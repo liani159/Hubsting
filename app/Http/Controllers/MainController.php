@@ -38,7 +38,39 @@ class MainController extends Controller
     }
 
     public function admin_home(Request $request){
-        return view('admins_views.index');
+        $simple = User::where('as_paid', false)->count();
+        $premium = User::where('as_paid', true)->count();
+        $admins = User::where('is_admin', true)->count();
+        $lista = [$simple, $premium, $admins];
+        //total Users
+        $total_users = User::all()->count();
+        //number of monthly new users
+        $num_new_users = User::whereMonth('created_at', date('m'))
+            ->whereYear('created_at', date('Y'))
+            ->get(['name','created_at'])->count();
+        //dd($lista);
+
+        /*number of user registrated each month */
+        $userCountByMonth = User::selectRaw('count(id) as count, MONTH(created_at) as month')
+            ->groupBy('month')
+            ->get();
+        //dd($userCountByMonth);
+
+        //total storage used
+        $total_storage = Files::all()->sum('size');
+
+        $units = ['b', 'kb', 'mb', 'gb'];
+
+        for($i = 0; $total_storage >1024; $i++){
+            $total_storage /= 1024 ;
+        }
+
+        $total_storage = round($total_storage, 2) ." ". $units[$i];
+
+
+        return view('admins_views.index',['lista' => $lista, 'total_users' =>$total_users,
+            'num_news_users' =>$num_new_users, 'userCountByMonth' =>$userCountByMonth,
+            'total_storage' =>$total_storage]);
     }
 
     public function download(Files $file){

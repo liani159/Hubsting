@@ -18,6 +18,9 @@ class Team extends Model
         'name',
         'owner_id',
     ];
+    protected $casts = [
+        'created_at'  => 'date:d/m/Y',
+    ];
 
     public function users(){
         return $this->belongsToMany(User::class);

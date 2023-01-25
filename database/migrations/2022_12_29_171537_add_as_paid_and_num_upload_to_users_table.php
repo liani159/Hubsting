@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->boolean('as_paid')->default(false);
-            $table->bigInteger('num_upload');
+            $table->bigInteger('num_upload')->nullable();
         });
     }
 

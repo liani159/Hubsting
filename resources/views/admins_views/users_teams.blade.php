@@ -17,7 +17,7 @@
             <li class=""><a href="{{route('admin.show_user')}}" class="text-decoration-none plans">Users <i class="bi bi-people"></i></a></li>
             <li class=""><a href="{{route('admin.show_teams_user')}}" class="text-decoration-none plans">Users Teams <i class="bi bi-share text-white"></i></a> </li>
             <li class=""><a href="{{route('teams.index')}}" class="text-decoration-none plans">My teams <i class="bi bi-person-lines-fill text-white"></i></a> </li>
-            <li class=""><a href="{{route('admin.space')}}" class="text-decoration-none plans"> My Space <i class="bi bi-bookmark text-white"></i></a> </li>
+            <li class=""><a href="{{route('admin.space')}}" class="text-decoration-none plans">My Space <i class="bi bi-bookmark text-white"></i></a> </li>
         </ul>
     </div>
 
@@ -78,154 +78,43 @@
             </div>
         </nav>
 
-        <div class="container px-5 py-5">
-
-            <div class="row ps-3 justify-content-between text-center"> 
-                <div class="col-md-4 numUsers">
-                    <h3>Num Users</h3>
-                    <p>{{$total_users}}</p> 
-                </div>
-                <div class="col-md-4 storage">
-                    <h3>Total storage used</h3>
-                    <p> {{$total_storage}}</p>
-                    
-                </div>
-                <div class="col-md-4 newUsers">
-                    <h3>new User(s)</h3>
-                    <p> + {{$num_news_users}}</p>
-                </div>
-            </div>
-
-            <div class="row mt-5 ps-3 justify-content-between text-center flop"> 
-                <div class="col-lg-6" >
-                    <canvas id="myChart"></canvas> 
-                </div>
-                <div class="col-lg-6">
-                    <canvas id="myChar"></canvas>
-                </div>
-                
-            </div>
-
-            
+        <div class="container px-5 py-5 overflow-auto">
+            <h3 class="text-center mb-4">All teams created by users</h3>
+            <table class="table mt-3 " id="data-table">
+                <thead>
+                    <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Owner_id</th>
+                    <th scope="col">Created_at</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
-<!-- fine content -->
-</div>
+    <!-- fine content -->
+    </div>
 
-    
 
 </div>
 
 <script type="application/javascript">
 
-    //chart 1
-    var xValues = ["Simple Users", "Premium Users", "Admins"];
-    /* var yValues = [55, 40, 2]; */
-    var yValues = <?php echo json_encode($lista) ?>;
-    //console.log(yValues);
-    var barColors = [
-    "#b91d47",
-    "#00aba9",
-    "#2b5797",
-    ];
+    $(function(){
+        var table = $('#data-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajex: "table",
+            columns:[
+                {data:'id', name:'id'},
+                {data:'name', name:'name' },
+                {data:'owner_id', name:'owner_id' },
+                {data:'created_at', name:'created_at'},
+            ]
+        });
+    })
 
-    new Chart("myChart", {
-    type: "doughnut",
-    data: {
-        labels: xValues,
-        datasets: [{
-        backgroundColor: barColors,
-        data: yValues
-        }]
-    },
-    options: {
-        title: {
-        display: true,
-        text: "Reaprtition of users"
-        }
-    }
-    });
-
-    //chart 2
-    const ctx = document.getElementById('myChar');
-    var userCountByMonths = <?php echo json_encode($userCountByMonth) ?>;
-    var months = [];
-    var value = [];
-    console.log(userCountByMonths);
-
-    userCountByMonths.forEach(function(userCountByMonth) {
-    //console.log(number);
-        if(userCountByMonth.month == 1){
-                months.push("January");
-                value.push(userCountByMonth.count);
-            }
-            else if(userCountByMonth.month == 2){
-                months.push("Febuary");
-                value.push(userCountByMonth.count);
-            }
-            else if(userCountByMonth.month == 3){
-                months.push("March");
-                value.push(userCountByMonth.count);
-            }
-            else if(userCountByMonth.month == 4){
-                months.push("April");
-                value.push(userCountByMonth.count);
-            }
-            else if(userCountByMonth.month == 5){
-                months.push("May");
-                value.push(userCountByMonth.count);
-            }
-            else if(userCountByMonth.month == 6){
-                months.push("June");
-                value.push(userCountByMonth.count);
-            }
-            else if(userCountByMonth.month == 7){
-                months.push("Jully");
-                value.push(userCountByMonth.count);
-            }
-            else if(userCountByMonth.month == 8){
-                months.push("August");
-                value.push(userCountByMonth.count);
-            }
-            else if(userCountByMonth.month == 9){
-                months.push("September");
-                value.push(userCountByMonth.count);
-            }
-            else if(userCountByMonth.month == 10){
-                months.push("October");
-                value.push(userCountByMonth.count);
-            }
-            else if(userCountByMonth.month == 11){
-                months.push("November");
-                value.push(userCountByMonth.count);
-            }
-            else if(userCountByMonth.month == 12){
-                months.push("December");
-                value.push(userCountByMonth.count);
-            }
-});
-    
-    console.log(months);
-    console.log(value);
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-        labels: months,
-        datasets: [{
-            label: 'Number of registration per months',
-            data: value,
-            borderWidth: 1
-        }]
-        },
-        options: {
-        scales: {
-            y: {
-            beginAtZero: true
-            }
-        }
-        }
-    });
-
-    //sidebar
     $(".sidebar ul li").on('click', function(e){
                 //e.preventDefault();
                 $(".sidebar ul li.active").removeClass('active');
