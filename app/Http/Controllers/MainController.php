@@ -34,7 +34,7 @@ class MainController extends Controller
 
         //for return with path of ancestors
         return view('users_views.index', ['obj' => $obj,
-        'ancestors' => $obj->ancestorsAndSelf]);
+        'ancestors' => $obj->ancestorsAndSelf->reverse()->values()]);
     }
 
     public function admin_home(Request $request){
@@ -94,6 +94,6 @@ class MainController extends Controller
 
         //for return with path of ancestors
         return view('users_views.team_index', ['obj' => $obj,
-        'ancestors' => $obj->ancestorsAndSelf, 'team_id' => $team_id]);
+        'ancestors' => $obj->ancestorsAndSelf->reverse()->values(), 'team_id' => $team_id]);
     }
 }

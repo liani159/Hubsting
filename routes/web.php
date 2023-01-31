@@ -35,35 +35,48 @@ Route::post('/validate_login',[UserController::class, 'validate_login'])->name('
 Route::get('/logout',[UserController::class, 'logout'])->name('user.logout'); */
 
 
+Route::get('/root', [MainController::class, 'user_home'])->name('home.user');
+
 //Middleware for UserAccess
 //user
 
-
-
 Route::middleware(['auth', 'user-access:user'])->group(
     function(){
-        Route::get('/user/home', [MainController::class, 'user_home'])->name('home.user');
-        Route::get('/user/home', [MainController::class, 'user_home'])->name('home.user');
-        Route::get('/user/home/team/{team_id}', [MainController::class, 'team_home'])->name('home.team');
-        Route::get('/files/{file}', [MainController::class, 'download'])->name('download');
-        Route::resource('teams', TeamController::class);
-        //update team
-        Route::post('teams/edit', [TeamController::class, 'update'])->name('update');
-        //Delete team
-        Route::post('teams/delete/{owner_id}/{id_team}', [TeamController::class, 'destroy'])->name('deleteTeam');
-        
-        Route::resource('members', MemberController::class);
-        Route::get('/members/delete/{id}/{id_team}', [MemberController::class, 'destroy'])->name('deleteMember'); 
+        /* Route::get('/user/home', [MainController::class, 'user_home'])->name('home.user');
+        Route::get('/user/home', [MainController::class, 'user_home'])->name('home.user'); */
+        //
         Route::get('/plan', [UserController::class, 'asPaid'])->name('myPlan');
         Route::get('/plan/sub/{value}', [UserController::class, 'subscribe'])->name('subscribe');
         Route::get('/plan/unsub/{value}', [UserController::class, 'unsubscribe'])->name('unsubscribe');
         /*Route::POST('/members/add', [TeamController::class, 'addMember'])->name('addMember');
         Route::POST('/members/delete/{id}', [TeamController::class, 'deleteMember'])->name('deleteMember'); */
         
+        /* Route::get('/user/home/team/{team_id}', [MainController::class, 'team_home'])->name('home.team_u');
+        Route::get('/files/{file}', [MainController::class, 'download'])->name('download');
+        //Route::resource('teams', TeamController::class);
+        //update team
+        Route::post('teams/edit', [TeamController::class, 'update'])->name('update');
+        //Delete team
+        Route::post('teams/delete/{owner_id}/{id_team}', [TeamController::class, 'destroy'])->name('deleteTeam');
+        
+        Route::resource('members', MemberController::class);
+        Route::get('/members/delete/{id}/{id_team}', [MemberController::class, 'destroy'])->name('deleteMember'); */ 
+
     }
 );
+//general-route
+Route::resource('teams', TeamController::class);
+Route::get('/home/team/{team_id}', [MainController::class, 'team_home'])->name('home.team');
+Route::get('/files/{file}', [MainController::class, 'download'])->name('download');
+ //update team
+ Route::post('/teams/edit', [TeamController::class, 'update'])->name('update');
+ //Delete team
+ Route::post('/teams/delete/{owner_id}/{id_team}', [TeamController::class, 'destroy'])->name('deleteTeam');
 
-//admin
+ Route::resource('members', MemberController::class);
+ Route::get('/members/delete/{id}/{id_team}', [MemberController::class, 'destroy'])->name('deleteMember');
+
+ //admin
 Route::middleware(['auth', 'user-access:admin'])->group(
     function(){
         Route::get('/admin/my_space', [MainController::class, 'user_home'])->name('admin.space');
@@ -72,16 +85,16 @@ Route::middleware(['auth', 'user-access:admin'])->group(
         Route::get('/admin/show/teams_users', [AdminController::class, 'show_teams_users'])->name('admin.show_teams_user');
     
         //just to show the difference between siple user an admin
-        Route::get('/admin/home/team/{team_id}', [MainController::class, 'team_home'])->name('home.team');
-        Route::get('admin/files/{file}', [MainController::class, 'download'])->name('download');
-        Route::resource('teams', TeamController::class);
-        //update team
+/*         Route::get('/admin/home/team/{team_id}', [MainController::class, 'team_home'])->name('home.team');
+        Route::get('admin/files/{file}', [MainController::class, 'download'])->name('download'); */
+        
+       /*  //update team
         Route::post('admin/teams/edit', [TeamController::class, 'update'])->name('update');
         //Delete team
         Route::post('admin/teams/delete/{owner_id}/{id_team}', [TeamController::class, 'destroy'])->name('deleteTeam');
 
         Route::resource('members', MemberController::class);
-        Route::get('admin/members/delete/{id}/{id_team}', [MemberController::class, 'destroy'])->name('deleteMember');
+        Route::get('admin/members/delete/{id}/{id_team}', [MemberController::class, 'destroy'])->name('deleteMember'); */
 
     }
 );

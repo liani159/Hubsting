@@ -98,13 +98,15 @@
                 </div>
             </div>
             <div class="row mb-2 p-2 border rounded table-info">
-                @foreach($ancestors as $an)
+                
                     <div class="text-primary">
+                    @foreach($ancestors as $an)
                         <a class = "mx-auto float-start cump" href="{{route('home.user', ['uuid' => $an->uuid])}}">
-                            {{$an->objectable->name}}    @if(!$loop->last)> @endif
+                            {{$an->objectable->name}}   @if(!$loop->last) > @endif
                         </a> 
+                    @endforeach
                     </div>
-                @endforeach
+                
 
                 <div class="col md-12 overflow-auto">
                     <table class="table ">

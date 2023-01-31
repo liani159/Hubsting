@@ -8,12 +8,23 @@
             </h1>
             <button class="btn d-md-none d-block close-btn px-1 py-0 text-white fs-4"><i class="bi bi-list"></i></button>  
         </div>
-        <ul class="list-unstyled px-2 ">
-            <li class=""><a href="{{route('myPlan')}} class="text-decoration-none plans">My plan</a> <i class="bi bi-credit-card text-white"></i></li>
-            <li class=""><a href="{{route('teams.index')}}" class="text-decoration-none plans">Team <i class="bi bi-share text-white"></i></a> </li>
-            <li class=""><a href="mailto:zeusfarm64@gmail.com" class="text-decoration-none plans">Contact us <i class="bi bi-person-lines-fill text-white"></i></a> </li>
-            <li class=""><a href="#" class="text-decoration-none plans">Documentation <i class="bi bi-bookmark text-white"></i></a> </li>
-        </ul>
+        @auth 
+            @if(auth()->user()->is_admin)
+              <ul class="list-unstyled px-2 text-center ">
+                <li class=""><a href="{{route('admin.show_user')}}" class="text-decoration-none plans">Users <i class="bi bi-people"></i></a></li>
+                <li class=""><a href="{{route('admin.show_teams_user')}}" class="text-decoration-none plans">Users Teams <i class="bi bi-share text-white"></i></a> </li>
+                <li class=""><a href="{{route('teams.index')}}" class="text-decoration-none plans">My teams <i class="bi bi-person-lines-fill text-white"></i></a> </li>
+                <li class=""><a href="{{route('admin.space')}}" class="text-decoration-none plans"> My Space <i class="bi bi-bookmark text-white"></i></a> </li>
+              </ul>
+            @else
+              <ul class="list-unstyled px-2 text-center">
+                <li class=""><a href="{{route('myPlan')}}" class="text-decoration-none plans">My plan  <i class="bi bi-credit-card text-white"></i></a></li>
+                <li class=""><a href="{{route('teams.index')}}" class="text-decoration-none plans">Team <i class="bi bi-share text-white"></i></a> </li>
+                <li class=""><a href="mailto:zeusfarm64@gmail.com" class="text-decoration-none plans">Contact us <i class="bi bi-person-lines-fill text-white"></i></a> </li>
+                <li class=""><a href="#" class="text-decoration-none plans">Documentation <i class="bi bi-bookmark text-white"></i></a> </li>
+              </ul>
+            @endif
+        @endauth
     </div>
 
     <div class="content">
@@ -89,13 +100,13 @@
                 </div>
             </div>
             <div class="row mb-2 p-2 border rounded table-info">
-                @foreach($ancestors as $an)
-                    <div class="text-primary">
-                        <a class = "mx-3 float-start cump" href="{{route('home.team', ['team_id' => $team_id, 'uuid' => $an->uuid])}}">
-                            {{$an->objectable->name}}    @if(!$loop->last)> @endif
+            <div class="text-primary">
+                    @foreach($ancestors as $an)
+                        <a class = "mx-auto float-start cump" href="{{route('home.team', ['team_id' => $team_id])}}">
+                            {{$an->objectable->name}}   @if(!$loop->last) > @endif
                         </a> 
+                    @endforeach
                     </div>
-                @endforeach
 
                 <div class="col md-12 overflow-auto">
                     <table class="table ">
