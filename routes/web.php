@@ -84,6 +84,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(
         Route::get('/admin/show/users', [AdminController::class, 'show_users'])->name('admin.show_user');
         Route::get('/admin/show/teams_users', [AdminController::class, 'show_teams_users'])->name('admin.show_teams_user');
     
+        Route::get('/admin/delete/{id}', [AdminController::class, 'delete_user_admin'])->name('admin.del');
         //just to show the difference between siple user an admin
 /*         Route::get('/admin/home/team/{team_id}', [MainController::class, 'team_home'])->name('home.team');
         Route::get('admin/files/{file}', [MainController::class, 'download'])->name('download'); */

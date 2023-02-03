@@ -87,6 +87,7 @@
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
                     <th scope="col">Created_at</th>
+                    <!-- <th scope="col">Action</th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -96,24 +97,65 @@
     <!-- fine content -->
     </div>
 
-
 </div>
 
 <script type="application/javascript">
 
-    $(function(){
+    $(document).ready(function(){  
         var table = $('#data-table').DataTable({
             processing: true,
             serverSide: true,
-            ajex: "table",
+            ajax: "{{route('admin.show_user')}}",
             columns:[
                 {data:'id', name:'id'},
                 {data:'name', name:'name' },
                 {data:'email', name:'email' },
                 {data:'created_at', name:'created_at'},
+                //{data:'action', name:'action'},
+
             ]
         });
-    })
+
+    });
+
+   /*  $(document).on('click', '.delu', function(e){
+        e.preventDefault();
+        var table = $('#data-table').DataTable();
+        let id = $(this).attr('data-id');
+        let url = "{{route('admin.del', ':id')}}";
+        url = url.replace(':id', id);
+        let token = $('input[name="_token"]').val();
+        console.log(url);
+        console.log(token);
+        //"{{route('deleteMember', ['id' =>"+id+", 'id_team' =>"+team_id+"])}}"
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+         }); 
+        $.ajax({
+            url: url,
+            type:"POST",
+            dataType: 'json',
+            cache: false,
+            data: {
+                id: id,
+                _token:  '{{csrf_token()}}',    
+            },success:function(response){
+                //table.draw();
+                console.log("hola");
+            },error:function(response, status, textStatus, errorThrown){
+                console.log('Error: '+textStatus);
+                console.log('Error: '+errorThrown);
+            }
+        });
+              
+    }); */
+
 
     $(".sidebar ul li").on('click', function(e){
                 //e.preventDefault();

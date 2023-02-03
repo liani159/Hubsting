@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Team;
 use App\Models\Obj;
+use App\Models\User;
 use Livewire\WithFileUploads;
 
 
@@ -38,23 +39,45 @@ class FileTeamBrowser extends Component
  
     //delete object
     public function deleteObject(){
-        obj::where('team_id',$this->team_id)->find($this->confirmObjectDeletion)->delete();
-        $this->confirmObjectDeletion = null;
+         
 
-        $this->obj = $this->obj->fresh(); 
+        if(auth()->user()->as_paid){
+            obj::where('team_id',$this->team_id)->find($this->confirmObjectDeletion)->delete();
+            $this->confirmObjectDeletion = null;
+
+            $this->obj = $this->obj->fresh();
+        }else if(!auth()->user()->as_paid && (auth()->user()->num_upload <=5)){
+            $usr = User::find(Auth()->user()->id);
+            $user_count = $usr->num_upload;
+            if(!$user_count){
+                $count = 0;
+                //dd($count);
+                $usr->num_upload = $count;
+                $usr->save();
+            }else{
+                //dd($user_count+1);
+                $usr->num_upload -= 1;
+                $usr->save();
+            }
+            obj::where('team_id',$this->team_id)->find($this->confirmObjectDeletion)->delete();
+            $this->confirmObjectDeletion = null;
+
+            $this->obj = $this->obj->fresh();
+        }
     }
 
     // controllo sul numero di upload a fare qua dopo
     public function updatedUpload($upload){
-        {
-            $obj = $this->TeamId->objs()->make(['parent_id' => $this->obj->id
-            ]);
 
-            $team = Team::where('id', $this->team_id)->first();
+        if(auth()->user()->as_paid){
+
+                $obj = $this->TeamId->objs()->make(['parent_id' => $this->obj->id
+            ]);
+                $team = Team::where('id', $this->team_id)->first();
             //dd($team->name);
-            $obj->objectable()->associate(
-                $this->TeamId->files()
-                ->create([
+                $obj->objectable()->associate(
+                    $this->TeamId->files()
+                    ->create([
                     'name' => $upload->getClientOriginalName(),
                     'size' => $upload->getSize(),
                     'path' => $upload->storePublicly(
@@ -62,12 +85,71 @@ class FileTeamBrowser extends Component
                             'disk' => 'local'
                         ]
                     )
-                ])
+                    ])
                 );
                 $obj->save();
                 $this->obj = $this->obj->fresh();
-            /* $upload->storePublicly(auth()->user()->name, ['disk' => 'local']); */
+        }else if(!auth()->user()->as_paid && (auth()->user()->num_upload <5)){
+
+            $usr = User::find(Auth()->user()->id);
+            $user_count = $usr->num_upload;
+            if(!$user_count){
+                $count = 1;
+                //dd($count);
+                $usr->num_upload = $count;
+                $usr->save();
+            }else{
+                //dd($user_count+1);
+                $usr->num_upload += 1;
+                $usr->save();
+            }
+
+
+            $obj = $this->TeamId->objs()->make(['parent_id' => $this->obj->id
+            ]);
+            $team = Team::where('id', $this->team_id)->first();
+        //dd($team->name);
+            $obj->objectable()->associate(
+                $this->TeamId->files()
+                ->create([
+                'name' => $upload->getClientOriginalName(),
+                'size' => $upload->getSize(),
+                'path' => $upload->storePublicly(
+                    $team->name. $this->team_id, [
+                        'disk' => 'local'
+                    ]
+                )
+                ])
+            );
+            $obj->save();
+            $this->obj = $this->obj->fresh();
         }
+        else{
+            session()->flash('message', 'You have to update your plan to premium 
+                for upload more files.');
+        }
+        //fine
+        /*$obj = $this->TeamId->objs()->make(['parent_id' => $this->obj->id
+        ]);
+
+         $team = Team::where('id', $this->team_id)->first();
+        //dd($team->name);
+        $obj->objectable()->associate(
+            $this->TeamId->files()
+            ->create([
+                'name' => $upload->getClientOriginalName(),
+                'size' => $upload->getSize(),
+                'path' => $upload->storePublicly(
+                    $team->name. $this->team_id, [
+                        'disk' => 'local'
+                    ]
+                )
+            ])
+            );
+            $obj->save();
+            $this->obj = $this->obj->fresh(); */
+            /* $upload->storePublicly(auth()->user()->name, ['disk' => 'local']); */
+
     }
 
 

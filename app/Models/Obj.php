@@ -5,14 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+//use Laravel\Scout\Searchable;
 
 
 class Obj extends Model
 {
     use HasFactory;
+    //use Searchable ;
     use \Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
-
+    public $asYouType = false ;
     protected $fillable = [
         'parent_id',
     ];

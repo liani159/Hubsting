@@ -97,6 +97,15 @@
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Upload</button> 
                 </div>
             </div>
+            <!-- session -->
+            <div>
+                @if (session()->has('message'))
+                    <div class="alert alert-danger">
+                        {{ session('message') }}
+                    </div>
+                @endif
+            </div>
+            <!-- session -->
             <div class="row mb-2 p-2 border rounded table-info">
                 
                     <div class="text-primary">

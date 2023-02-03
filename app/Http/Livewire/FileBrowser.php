@@ -30,36 +30,110 @@ class FileBrowser extends Component
         
     //delete object
     public function deleteObject(){
-        obj::where('user_id',auth()->user()->id)->find($this->confirmObjectDeletion)->delete();
+        /* obj::where('user_id',auth()->user()->id)->find($this->confirmObjectDeletion)->delete();
         $this->confirmObjectDeletion = null;
 
-        $this->obj = $this->obj->fresh(); 
+        $this->obj = $this->obj->fresh(); */ 
+
+        if(auth()->user()->as_paid){
+            obj::where('user_id',auth()->user()->id)->find($this->confirmObjectDeletion)->delete();
+            $this->confirmObjectDeletion = null;
+
+            $this->obj = $this->obj->fresh();
+        }else if(!auth()->user()->as_paid && (auth()->user()->num_upload <=5)){
+
+            $usr = User::find(Auth()->user()->id);
+            $user_count = $usr->num_upload;
+            if(!$user_count){
+                $count = 0;
+                //dd($count);
+                $usr->num_upload = $count;
+                $usr->save();
+            }else{
+                //dd($user_count+1);
+                $usr->num_upload -= 1;
+                $usr->save();
+            }
+            obj::where('user_id',auth()->user()->id)->find($this->confirmObjectDeletion)->delete();
+            $this->confirmObjectDeletion = null;
+
+            $this->obj = $this->obj->fresh();
+        }
     }
 
 
     public function updatedUpload($upload){
         {
-            /* if(auth()->user()->as_paid){
+            if(auth()->user()->as_paid){
                 //eseguiamo normalmente
+                $obj = $this->UserId->objs()->make(['parent_id' => $this->obj->id
+                ]);
 
-            }else if(! auth()->user()->as_paid && (auth()->user()->num_upload <=5)){
+                $obj->objectable()->associate(
+                    $this->UserId->files()
+                    ->create([
+                        'name' => $upload->getClientOriginalName(),
+                        'size' => $upload->getSize(),
+                        'path' => $upload->storePublicly(
+                            auth()->user()->name.auth()->user()->id, [
+                                'disk' => 'local'
+                            ]
+                        )
+                    ])
+                    );
+                    $obj->save();
+                    $this->obj = $this->obj->fresh();
+
+            }else if(!auth()->user()->as_paid && (auth()->user()->num_upload <5)){
                //altrimenti puo fare la upload solo 5 volte
                //aumentiamo il numero di upload
+               $usr = User::find(Auth()->user()->id);
+                $user_count = $usr->num_upload;
+                if(!$user_count){
+                    $count = 1;
+                    //dd($count);
+                    $usr->num_upload = $count;
+                    $usr->save();
+                }else{
+                    //dd($user_count+1);
+                    $usr->num_upload += 1;
+                    $usr->save();
+                }
+
+
+                $obj = $this->UserId->objs()->make(['parent_id' => $this->obj->id
+                ]);
+
+                $obj->objectable()->associate(
+                    $this->UserId->files()
+                    ->create([
+                        'name' => $upload->getClientOriginalName(),
+                        'size' => $upload->getSize(),
+                        'path' => $upload->storePublicly(
+                            auth()->user()->name.auth()->user()->id, [
+                                'disk' => 'local'
+                            ]
+                        )
+                    ])
+                    );
+                    $obj->save();
+                    $this->obj = $this->obj->fresh();
 
                
             }else{
                 //se ha superato il suo numero massimo di upload, chiediamo all'utente
                 //di passara al piano superiore (a pagamento: subscription).
-                session()->flash('message', 'Post successfully updated.');
+                session()->flash('message', 'You have to update your plan to premium 
+                for upload more files.');
             }
             
             //nella view se ha superato il suo numero di upload per il piano gratuito
-                <div class="alert alert-success">
+                /* <div class="alert alert-success">
                 {{ session('message') }}
-                </div>
-            */
+                </div> */
+           
 
-            $obj = $this->UserId->objs()->make(['parent_id' => $this->obj->id
+            /* $obj = $this->UserId->objs()->make(['parent_id' => $this->obj->id
             ]);
 
             $obj->objectable()->associate(
@@ -75,7 +149,7 @@ class FileBrowser extends Component
                 ])
                 );
                 $obj->save();
-                $this->obj = $this->obj->fresh();
+                $this->obj = $this->obj->fresh(); */
             /* $upload->storePublicly(auth()->user()->name, ['disk' => 'local']); */
         }
     }
@@ -151,6 +225,7 @@ class FileBrowser extends Component
 
         //dd('create');
     }
+
 
 }
  

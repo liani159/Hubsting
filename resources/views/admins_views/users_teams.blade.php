@@ -105,7 +105,7 @@
         var table = $('#data-table').DataTable({
             processing: true,
             serverSide: true,
-            ajex: "table",
+            ajax: "{{route('admin.show_teams_user')}}",
             columns:[
                 {data:'id', name:'id'},
                 {data:'name', name:'name' },
