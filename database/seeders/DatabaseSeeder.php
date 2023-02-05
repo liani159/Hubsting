@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,39 +24,27 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        DB::table('users')->insert([
-            'name'=>'lian',
-            'email'=>'lianimopi@outlook.fr',
-            'is_admin'=>1,
-            'as_paid'=>1,
-            'password' => Hash::make('underscore'),
-            'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s"),
-        ]);
+        //admin_1 seed
+        $user = new User();
+        $user->name = 'lian';
+        $user->email = 'lianimopi@outlook.fr';
+        $user->is_admin = 1;
+        $user->as_paid = 1;
+        $user->password = Hash::make('underscore');
+        $user->created_at = date("Y-m-d H:i:s");
+        $user->updated_at = date("Y-m-d H:i:s");
+        $user->save();
 
-        DB::table('users')->insert([
-            'name' => 'jordan',
-            'email' => 'jordandavy600@gmail.com',
-            'is_admin'=>1,
-            'as_paid'=>1,
-            'password' => Hash::make('genie2021'),
-            'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s"),
-        ]);
-        //seed pour son objet ici
-        /* DB::table('objs')->insert([
-            'uuid' => Str::uuid(),
-            'parent_id' => null,
-            'is_admin'=>1,
-            'as_paid'=>1,
-            'password' => Hash::make('genie2021'),
-            'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s"),
-        ]); */
+        //admin_2 seed
+        $user = new User();
+        $user->name = 'jordan';
+        $user->email = 'jordandavy600@gmail.com';
+        $user->is_admin = 1;
+        $user->as_paid = 1;
+        $user->password = Hash::make('genie2021');
+        $user->created_at = date("Y-m-d H:i:s");
+        $user->updated_at = date("Y-m-d H:i:s");
+        $user->save();
 
     }
 }
-
-$obj = $user->objs()->make(['parent_id' => null]);
-            $obj->objectable()->associate($user->folder()->create(['name' => $user->name]));
-            $obj->save();

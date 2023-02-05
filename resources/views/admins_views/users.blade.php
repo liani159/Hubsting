@@ -85,6 +85,7 @@
                     <tr>
                     <th scope="col">Id</th>
                     <th scope="col">Name</th>
+                    <th scope="col">size</th>
                     <th scope="col">Email</th>
                     <th scope="col">Created_at</th>
                     <!-- <th scope="col">Action</th> -->
@@ -109,6 +110,7 @@
             columns:[
                 {data:'id', name:'id'},
                 {data:'name', name:'name' },
+                {data:'size_formatted', name:'size_formatted'},
                 {data:'email', name:'email' },
                 {data:'created_at', name:'created_at'},
                 //{data:'action', name:'action'},

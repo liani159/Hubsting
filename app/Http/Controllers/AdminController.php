@@ -11,19 +11,26 @@ class AdminController extends Controller
 {
     //
     public function show_users(Request $request){
-        //$users= User::all();
-        if($request->ajax()){
-            return datatables()->of(User::all())->toJson();
-        }
-        /* if($request->ajax()){
-            return datatables()->of($users)->addIndexColumn()->addColumn('action', 
-        function($users){
-            return '<input type="button" value="Delete" class="btn btn-danger delu" data-id="'.$users->id.'"/a>';
-            //return '<a href="{{route('.'admin.del'.', [ '.'id'.'=>'.$users->id.'])}}" class="btn btn-danger delu" data-id="'.$users->id.'">Delete</a>';
-        })->rawColumns(['action'])->make(true);
-        } */
+    
 
-        //dd($users);
+            $results = DB::table('users')
+                        ->join('files', 'users.id', '=', 'files.user_id')
+                        ->select('users.name as name', 'users.id as id', 'users.email as email',
+                            DB::raw("DATE_FORMAT(users.created_at, '%d/%m/%Y') as created_at"), DB::raw("SUM(files.size) AS size,
+                            CASE
+                                WHEN SUM(files.size) >= 1073741824 THEN CONCAT(ROUND(SUM(files.size) / 1073741824, 2), ' GB')
+                                WHEN SUM(files.size) >= 1048576 THEN CONCAT(ROUND(SUM(files.size) / 1048576, 2), ' MB')
+                                WHEN SUM(files.size) >= 1024 THEN CONCAT(ROUND(SUM(files.size) / 1024, 2), ' KB')
+                                ELSE CONCAT(SUM(files.size), ' B')
+                            END AS size_formatted"))
+                        ->groupBy('users.id')
+                        ->get();
+
+        //dd($results);
+        if($request->ajax()){
+            return datatables()->of($results)->toJson();
+        }
+
         return view('admins_views.users');
     }
     
@@ -34,7 +41,18 @@ class AdminController extends Controller
             ->join('users', 'teams.owner_id', '=', 'users.id')
             ->select('teams.name as nome', 'teams.id as id_team', 'users.name as owner_name',
                 'teams.created_at as created_at')
-            ->get();
+            ->get(); 
+            /* $results = DB::table('teams')
+            ->join('users', 'teams.owner_id', '=', 'users.id')
+            ->leftJoin(DB::raw('(SELECT team_id, SUM(files.size) as size FROM files GROUP BY team_id) as files'), function($join) {
+                $join->on('teams.id', '=', 'files.team_id');
+            })
+            ->select('teams.name as nome', 'teams.id as id_team', 'users.name as owner_name',
+                'teams.created_at as created_at', 'files.size')
+            ->groupBy('teams.owner_id')
+            ->havingRaw('COUNT(teams.owner_id) <= 1')
+            ->get(); */
+
 
         //dd($results);
         if($request->ajax()){
