@@ -89,7 +89,7 @@
             <div class="row mb-2 p-2 border rounded folder">
                 <div class="col-md-7 seachbar">
                     <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> 
+                        <input class="form-control me-2" id="search" type="search" placeholder="Search" aria-label="Search"> 
                     </form>
                 </div>
                 <div class="col-md-3  new folder">
@@ -117,7 +117,7 @@
                     @endforeach
                     </div>
 
-                <div class="col md-12 overflow-auto">
+                <div class="col md-12 overflow-auto lo">
                     <table class="table ">
                         <thead>
                             <tr>
@@ -139,7 +139,7 @@
                                     </td>
                                 </tr>
                             @endif
-
+    
                             @foreach($obj->children as $child)
                                 <tr>
                                     <!-- <i class="bi bi-files-primary p-1"> </i> -->
@@ -181,10 +181,18 @@
                         </div>
                     @endif
                 </div>
+                <!-- iniz -->
+                <div class="panel panel-default overflow-auto" id="result2" style="display:none">
+                    <ul class="list-group" id="memlist2">
+
+                    </ul>
+                </div>
+                <!-- fin -->
             </div>
         </div>
         <br>
-        <p> Only for users view</p>
+        <p data-team={{$team_id}}  style="display:none"> {{$team_id}}</p>
+        <!-- <p> Only for users view</p> -->
     </div>
 
 <!-- deletion -->
@@ -236,6 +244,7 @@
                 </div>
             </div>
         </div>
+        
     </div>
     <script>
         $(".sidebar ul li").on('click', function(e){
@@ -250,6 +259,105 @@
 
         $(".close-btn").on("click", function(){
             $(".sidebar").removeClass('active');
+        });
+
+        $(document).ready(function(){
+            let search ;
+            $("#search").keyup(function(e){
+                e.preventDefault();
+                var teamId = $("p").data("team");
+                search = $('#search').val();
+                //console.log(search);
+                let token = $('input[name="_token"]').val();
+                var url = "{{ route('ricerca', ['search' => '__SEARCH__', 'teamId' => '__teamId__' ]) }}";
+                url = url.replace('__SEARCH__', search);
+                url = url.replace('__teamId__', teamId);
+                console.log(url);
+                if(search==""){
+                    $("#memlist").html("");
+                    $("#result").hide();
+
+                    $("#memlist2").html("");
+                    $("#result2").hide();
+                    $(".lo").show();
+                    console.log("in :"+search);
+                }else{
+                    /* $.get("{{URL::to('search')}}", {search:search}, function(data){
+                        $("#memlist").empty().html(data);
+                        $("#result").show();
+                        console.log(data);
+
+                    }) fine*/
+                    
+                    $.ajax({
+                        url: url,
+                        type:"GET",
+                        dataType: 'json',
+                        data: {
+                            search: search,
+                            teamId: teamId,
+                            _token: token,    
+                        },success: function(response){
+                            var length = response.data.length;
+                            $("#memlist").html("");
+                            $("#memlist2").html("");
+                           
+                            $(".lo").hide();
+                            $("#memlist2").append(
+                                    '<table class="table">'+
+                                        '<thead>'+
+                                            '<tr>'+
+                                            '<th scope="col">Name</th>'+
+                                            '<th scope="col">Size</th>'+
+                                            '<th scope="col">Created at</th>'+
+                                            '</tr>'+
+                                        '</thead>'+
+                                        '</table>'
+                                     );
+
+                            response.data.forEach(function(elt) {
+                                //$("#memlist").append(elt.name+" </br>");
+                                var route = "{{ route('download', '__ele__') }}";
+                                route = route.replace('__ele__', elt.id);
+                                console.log("route: "+route);
+                                console.log("elt: "+elt.name);
+
+                                var units = ['b', 'kb', 'mb', 'gb'];
+                                var siz;
+                                for(var i = 0; elt.size >1024; i++){
+                                    elt.size /= 1024 ;
+                                }
+                                elt.size = elt.size.toPrecision(3) +" "+ units[i];
+                                $("#memlist2").append(
+                                    '<table class="table">'+
+                                    
+                                        '<tbody>'+
+                                            '<tr>'+
+                                            '<td> <a href="'+route+'"><i class="bi bi-files p-1"> </i>' + elt.name + '</a></td>'+
+                                                '<td >'+elt.size+'</td>'+
+                                                '<td >'+elt.created_at+'</td>'+
+                                                
+                                            '</tr>'+
+                                        '</tbody>'+
+                                    '</table>' );
+
+                            });
+
+                            //elt.name+' </br>'
+
+                            //$("#result").show();
+                            $("#result2").show();
+                            console.log(response.data);
+                        }, error: function(response, xhr, textStatus, status){
+                            console.log('error :'+ xhr.responseText);
+                            //console.log(url);
+                        }
+                        
+                    })
+                    //console.log(search);
+                }
+                
+            });
         });
     </script>
 

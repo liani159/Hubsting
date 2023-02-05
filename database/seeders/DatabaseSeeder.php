@@ -42,5 +42,20 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s"),
         ]);
+        //seed pour son objet ici
+        /* DB::table('objs')->insert([
+            'uuid' => Str::uuid(),
+            'parent_id' => null,
+            'is_admin'=>1,
+            'as_paid'=>1,
+            'password' => Hash::make('genie2021'),
+            'created_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("Y-m-d H:i:s"),
+        ]); */
+
     }
 }
+
+$obj = $user->objs()->make(['parent_id' => null]);
+            $obj->objectable()->associate($user->folder()->create(['name' => $user->name]));
+            $obj->save();

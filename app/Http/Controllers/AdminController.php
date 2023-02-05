@@ -11,7 +11,7 @@ class AdminController extends Controller
 {
     //
     public function show_users(Request $request){
-        $users= User::all();
+        //$users= User::all();
         if($request->ajax()){
             return datatables()->of(User::all())->toJson();
         }
@@ -28,8 +28,17 @@ class AdminController extends Controller
     }
     
     public function show_teams_users(Request $request){
+        $teams = Team::all();
+
+        $results = DB::table('teams')
+            ->join('users', 'teams.owner_id', '=', 'users.id')
+            ->select('teams.name as nome', 'teams.id as id_team', 'users.name as owner_name',
+                'teams.created_at as created_at')
+            ->get();
+
+        //dd($results);
         if($request->ajax()){
-            return datatables()->of(Team::all())->toJson();
+            return datatables()->of($results)->toJson();
         }
         //dd($teams);
         return view('admins_views.users_teams');

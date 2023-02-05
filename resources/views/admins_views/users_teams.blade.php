@@ -107,9 +107,9 @@
             serverSide: true,
             ajax: "{{route('admin.show_teams_user')}}",
             columns:[
-                {data:'id', name:'id'},
-                {data:'name', name:'name' },
-                {data:'owner_id', name:'owner_id' },
+                {data:'id_team', name:'id_team'},
+                {data:'nome', name:'nome' },
+                {data:'owner_name', name:'owner_name' },
                 {data:'created_at', name:'created_at'},
             ]
         });

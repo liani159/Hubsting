@@ -17,6 +17,10 @@ class Files extends Model
         'path',
     ];
 
+    protected $casts = [
+        'created_at'  => 'date:d/m/Y',
+    ];
+
     public static function booted(){
 
         static::creating(function ($model){

@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\FileController;
 use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
@@ -73,8 +74,13 @@ Route::get('/files/{file}', [MainController::class, 'download'])->name('download
  //Delete team
  Route::post('/teams/delete/{owner_id}/{id_team}', [TeamController::class, 'destroy'])->name('deleteTeam');
 
- Route::resource('members', MemberController::class);
- Route::get('/members/delete/{id}/{id_team}', [MemberController::class, 'destroy'])->name('deleteMember');
+Route::resource('members', MemberController::class);
+Route::get('/members/delete/{id}/{id_team}', [MemberController::class, 'destroy'])->name('deleteMember');
+
+//search don't work
+Route::get('/search/{search}', [FileController::class, 'search'])->name('search');
+Route::get('/ricerca/{search}/{teamId}', [FileController::class, 'ricerca'])->name('ricerca');
+
 
  //admin
 Route::middleware(['auth', 'user-access:admin'])->group(

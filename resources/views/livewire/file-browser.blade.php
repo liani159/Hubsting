@@ -87,15 +87,25 @@
             <div class="row mb-2 p-2 border rounded folder">
                 <div class="col-md-7 seachbar">
                     <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> 
+                        @csrf
+                        <input class="form-control me-2" id="search" name="search" type="search" placeholder="Search" aria-label="Search"> 
                     </form>
                 </div>
+
                 <div class="col-md-3  new folder">
                     <button wire:click = "$set('creatingNewFolder', true)" type="button" class="btn btn-secondary">New Folder</button>
                 </div>
                 <div class="col-md-2  upload">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Upload</button> 
                 </div>
+
+                <!-- iniz -->
+                <div class="panel panel-default" id="result" style="display:none">
+                    <ul class="list-group" id="memlist">
+
+                    </ul>
+                </div>
+                <!-- fin -->
             </div>
             <!-- session -->
             <div>
@@ -117,7 +127,7 @@
                     </div>
                 
 
-                <div class="col md-12 overflow-auto">
+                <div class="col md-12 overflow-auto lo">
                     <table class="table ">
                         <thead>
                             <tr>
@@ -181,6 +191,14 @@
                         </div>
                     @endif
                 </div>
+
+                <!-- iniz -->
+                <div class="panel panel-default overflow-auto" id="result2" style="display:none">
+                    <ul class="list-group" id="memlist2">
+
+                    </ul>
+                </div>
+                <!-- fin -->
             </div>
         </div>
         <br>
@@ -278,7 +296,150 @@
         $(".close-btn").on("click", function(){
             $(".sidebar").removeClass('active');
         });
+
+        $(document).ready(function(){
+            let search ;
+            $("#search").keyup(function(e){
+                e.preventDefault();
+                //var search = $('#search').val();
+                search = $('#search').val();
+                //console.log(search);
+                let token = $('input[name="_token"]').val();
+                var url = "{{ route('search', ['search' => '__SEARCH__']) }}";
+                url = url.replace('__SEARCH__', search);
+                console.log(url);
+                if(search==""){
+                    $("#memlist").html("");
+                    $("#result").hide();
+
+                    $("#memlist2").html("");
+                    $("#result2").hide();
+                    $(".lo").show();
+                    console.log("in :"+search);
+                }else{
+                    /* $.get("{{URL::to('search')}}", {search:search}, function(data){
+                        $("#memlist").empty().html(data);
+                        $("#result").show();
+                        console.log(data);
+
+                    }) fine*/
+                    
+                    $.ajax({
+                        url: url,
+                        type:"GET",
+                        dataType: 'json',
+                        data: {
+                            search: search,
+                            _token: token,    
+                        },success: function(response){
+                            var length = response.data.length;
+                            $("#memlist").html("");
+                            $("#memlist2").html("");
+                           
+                            $(".lo").hide();
+                            $("#memlist2").append(
+                                    '<table class="table">'+
+                                        '<thead>'+
+                                            '<tr>'+
+                                            '<th scope="col">Name</th>'+
+                                            '<th scope="col">Size</th>'+
+                                            '<th scope="col">Created at</th>'+
+                                            '</tr>'+
+                                        '</thead>'+
+                                        '</table>'
+                                     );
+
+                            response.data.forEach(function(elt) {
+                                //$("#memlist").append(elt.name+" </br>");
+                                var route = "{{ route('download', '__ele__') }}";
+                                route = route.replace('__ele__', elt.id);
+                                console.log("route: "+route);
+                                console.log("elt: "+elt.name);
+
+                                var units = ['b', 'kb', 'mb', 'gb'];
+                                var siz;
+                                for(var i = 0; elt.size >1024; i++){
+                                    elt.size /= 1024 ;
+                                }
+                                elt.size = elt.size.toPrecision(3) +" "+ units[i];
+                                $("#memlist2").append(
+                                    '<table class="table">'+
+                                    
+                                        '<tbody>'+
+                                            '<tr>'+
+                                            '<td> <a href="'+route+'"><i class="bi bi-files p-1"> </i>' + elt.name + '</a></td>'+
+                                                '<td >'+elt.size+'</td>'+
+                                                '<td >'+elt.created_at+'</td>'+
+                                                
+                                            '</tr>'+
+                                        '</tbody>'+
+                                    '</table>' );
+
+                            });
+
+                            //elt.name+' </br>'
+
+                            //$("#result").show();
+                            $("#result2").show();
+                            console.log(response.data);
+                        }, error: function(response, xhr, textStatus, status){
+                            console.log('error :'+ xhr.responseText);
+                            //console.log(url);
+                        }
+                        
+                    })
+                    //console.log(search);
+                }
+                
+            });
+        });
+
+            /*forse da fare
+                '<td> <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-did="'+elt.id+'" data-bs-target="#drenmodal">Rename</button> </td>'+                         
+                '<td> <a href="" class="btn btn-danger ddel" data-did="'+elt.id+'"> Delete</a></td>'+
+            */     
+        /* $(document).on('click', '.savedren', function(){
+            //e.preventDefault();
+            var dnewName = $('input[name="newName"]').val();
+            var idFile = 
+            console.log(dnewName);
+
+            $.ajax({
+                    url: url,
+                    type:"GET",
+                    dataType: 'json',
+                    data: {
+                        search: search,
+                        _token: token,    
+                    },success: function(response){
+                    }, error: function(response, xhr, textStatus, status){
+                        console.log('error :'+ xhr.responseText);
+                        //console.log(url);
+                    }
+                    
+                })
+
+
+        }); */
     </script>
+        <!-- <div class="modal fade" id="drenmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="new">Name:</label>
+                    <input type="text" name="newName" placeholder="new name">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary savedren" data-bs-dismiss="modal">Save changes</button>
+                </div>
+                </div>
+            </div>
+        </div> -->
 </div>
  
 
