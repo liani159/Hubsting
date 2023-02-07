@@ -62,35 +62,40 @@
 </section>
 
 <!-- usage -->
-<section class="p-2">
+<section class="p-2 text-center">
     <div class="container">
-    <h2 class="text-center p-2">how you plan to use hubsting</h2>
-            <div class="d-sm-flex">
+    <h2>Functionalities</h2>
+            <div class="d-sm-flex text-center">
                 <div class="row text-dark">
-                    <div class="col-md-6 p-2">
+                    <div class="col-md-12 p-2 ">
                         <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Personal Usage</h5>
-                                <p>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam enim 
-                                    animi exercitationem alias quaerat.Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam enim 
-                                    animi exercitationem alias quaerat. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam enim 
-                                    animi exercitationem alias quaerat.
-                                </p>
+                            <div class="card-body ">
+                                <div class="d-flex flex-row">
+                                    <div>
+                                    <h5 class="card-title">Personal Usage</h5>
+
+                                        <p>
+                                            <br> Hubsting is a safety and secured app that gives the possibility to it 
+                                            <br> users to storefiles(Musics,files,images...etc) and get it back very easily
+                                        </p>
+                                    </div>
+                                    <div>
+
+                                        <h5 class="card-title">Professional Usage</h5>
+                                        <p>
+                                            <br>Hubsting is an app that gives the possibility to a group of person or a company to work in a sinchronized manner
+
+                                            <br> having access to the same files(Musics,files,images...etc).The files could be shared and gotten back very easily
+                                        </p>
+                                                                            </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 p-2">
-                        <div class="card">
-                            <div class="card-body">
-                            <h5 class="card-title">Professional Usage</h5>
-                                <p>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam enim 
-                                    animi exercitationem alias quaerat. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam enim 
-                                    animi exercitationem alias quaerat. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam enim 
-                                    animi exercitationem alias quaerat.
-                                </p>
-                            </div>
+                               
+                            <div class="flexbox2">
+                                <a href="{{route('pricing')}}">
+                            <button type="button" class="btn btn-primary" >Select a pack</button>
+                            </a>       
+                        </div>                 
                         </div>
                     </div>
                 </div>
@@ -107,11 +112,11 @@
             <div class="col-md-3 col-sm-6 mb-3"> 
                 <div class="card text-dark">
                     <div class="card-body">
-                        <img src="images/globe-7510104_1920.jpg" class="img-fluid rounded-circle mb-2" alt="globo">
+                        <img src="images/justin.jpg" class="img-fluid rounded-circle mb-2" alt="globo">
                         <h3 class="card-title mb-2">Liani M</h3>
                         <p class="card-text">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam enim 
-                            animi exercitationem alias quaerat. 
+                            A top quality App,it's very responsive and a good and safe place to keep
+                            your documents
                         </p>
                         <a href="#"> <i class="bi bi-twitter text-dark mx-1"></i></a>
                         <a href="#"> <i class="bi bi-facebook text-dark mx-1"></i></a>
@@ -123,11 +128,11 @@
             <div class="col-md-3 col-sm-6 mb-3">
             <div class="card text-dark">
                     <div class="card-body ">
-                        <img src="images/flower-7108507_1920.jpg" class="img-fluid rounded-circle mb-2" alt="globo">
-                        <h3 class="card-title mb-2">Vitale D</h3>
+                        <img src="images/jordi.jpg" class="img-fluid rounded-circle mb-2" alt="globo">
+                        <h3 class="card-title mb-2">Jordi</h3>
                         <p class="card-text">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam enim 
-                            animi exercitationem alias quaerat. 
+                            I like the web app,it permits to get your files very easile and rapidly and it's well
+                            organised
                         </p>
                         <a href="#"> <i class="bi bi-twitter text-dark mx-1"></i></a>
                         <a href="#"> <i class="bi bi-facebook text-dark mx-1"></i></a>
@@ -138,11 +143,11 @@
             </div>
             <div class="col-md-3 col-sm-6 mb-3 "><div class="card text-dark">
                     <div class="card-body">
-                        <img src="images/bird-7102006_1920.jpg" class="img-fluid rounded-circle mb-2" alt="globo">
-                        <h3 class="card-title mb-2">John Doe</h3>
+                        <img src="images/xaviera.jpg" class="img-fluid rounded-circle mb-2" alt="globo">
+                        <h3 class="card-title mb-2">Xaviera</h3>
                         <p class="card-text">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam enim 
-                            animi exercitationem alias quaerat. 
+                            I was a bit sceptic at the begining but i opted for th professional option i am very satisfied with my team
+                            i'm very happy of what i can do here we can easily share files securely among us and it's a great chance 
                         </p>
                         <a href="#"> <i class="bi bi-twitter text-dark mx-1"></i></a>
                         <a href="#"> <i class="bi bi-facebook text-dark mx-1"></i></a>
@@ -153,11 +158,11 @@
             </div>
             <div class="col-md-3 col-sm-6 mb-3"><div class="card text-dark">
                     <div class="card-body">
-                        <img src="images/rottweiler-7510724_1920.jpg" class="img-fluid rounded-circle mb-2" alt="globo">
-                        <h3 class="card-title mb-2">Nicklaus</h3>
+                        <img src="images/Andrea.jpg" class="img-fluid rounded-circle mb-2" alt="globo">
+                        <h3 class="card-title mb-2">Andrea</h3>
                         <p class="card-text ">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam enim 
-                            animi exercitationem alias quaerat. 
+                            I think there are thinks that need to be added to the app and for the price i pay there should be much more 
+                            options
                         </p>
                         <a href="#"> <i class="bi bi-twitter text-dark mx-1"></i></a>
                         <a href="#"> <i class="bi bi-facebook text-dark mx-1"></i></a>

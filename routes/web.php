@@ -81,6 +81,8 @@ Route::get('/members/delete/{id}/{id_team}', [MemberController::class, 'destroy'
 Route::get('/search/{search}', [FileController::class, 'search'])->name('search');
 Route::get('/ricerca/{search}/{teamId}', [FileController::class, 'ricerca'])->name('ricerca');
 
+//pricing
+Route::get('/pricing', [MainController::class, 'pricing'])->name('pricing');
 
  //admin
 Route::middleware(['auth', 'user-access:admin'])->group(

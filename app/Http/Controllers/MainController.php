@@ -18,6 +18,10 @@ class MainController extends Controller
         return view('land_page');
     }
 
+    public function pricing(){
+        return view('users_views.pricing');
+    }
+
     public function user_home(Request $request){
         //for current user
         /*recupiamo l'oggetto di base creato alla creazione dell'user
