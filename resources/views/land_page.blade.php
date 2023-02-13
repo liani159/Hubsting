@@ -15,9 +15,9 @@
                 you'll be definetly approve.            
                 </p>
                 @auth
-                <a href="#" class="btn btn-primary">Start using Now</a>
+                    <a href="{{route('myPlan')}}" class="btn btn-primary">Start using Now</a>
                 @else
-                <a href="#" class="btn btn-primary">Start using Now</a>
+                    <a href="{{route('pricing')}}" class="btn btn-primary">Start using Now</a>
                 @endauth
             </div>
             <img src="images/Uploading-cuate.svg" alt="globo" class="img-fluid w-50 ms-auto  d-none d-md-block">
@@ -62,7 +62,33 @@
 </section>
 
 <!-- usage -->
-<section class="p-2 text-center">
+<h2 class="text-center">Functionalities</h2>
+<div class="container border my-4 px-4 py-2">
+    <div class="row">
+        <div class="col-md-6 text-center">
+            <h5 class="card-title">Personal Usage</h5>
+
+            <p>
+                you could choice to use our application to back up your files without
+                stress, recover them whenever you want regardless of your device.
+            </p>
+        </div>
+        <div class="col-md-6 text-center">
+            <h5 class="card-title">Professional Usage</h5>
+            <p>
+                with the My team functionality you can also choose to use our 
+                application to share your files with your relatives/colleagues and
+                thus work in perfect symbiosis in your company.
+            </p>
+        </div>
+    </div>
+    <div class="row text-center">
+        <a href="{{route('pricing')}}" class="btn btn-primary prix m-auto">Select a pack</a>
+    </div>
+</div>
+
+
+<!-- <section class="p-2 text-center">
     <div class="container">
     <h2>Functionalities</h2>
             <div class="d-sm-flex text-center">
@@ -101,16 +127,16 @@
                 </div>
             </div>
     </div>
-</section>
+</section> -->
 
  <!-- rated -->
 <section class="text-dark p-5">
     <div class="container text-center">
-    <h2 class="text-center text-dark">Users Reviews</h2>
-                <p class="text-dark text-center">read what think our users of ours products</p>
+        <h2 class="text-center text-dark">Users Reviews</h2>
+        <p class="text-dark text-center">read what think our users of ours products</p>
         <div class="row ">
-            <div class="col-md-3 col-sm-6 mb-3"> 
-                <div class="card text-dark">
+            <div class="col-md-3 col-sm-6 mb-3 tof"> 
+                <div class="card h-100 text-dark">
                     <div class="card-body">
                         <img src="images/justin.jpg" class="img-fluid rounded-circle mb-2" alt="globo">
                         <h3 class="card-title mb-2">Liani M</h3>
@@ -125,10 +151,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6 mb-3">
-            <div class="card text-dark">
+            <div class="col-md-3 col-sm-6 mb-3 tof">
+                <div class="card h-100 text-dark">
                     <div class="card-body ">
-                        <img src="images/jordi.jpg" class="img-fluid rounded-circle mb-2" alt="globo">
+                        <img src="images/download.jpeg" class="img-fluid rounded-circle mb-2" alt="globo">
                         <h3 class="card-title mb-2">Jordi</h3>
                         <p class="card-text">
                             I like the web app,it permits to get your files very easile and rapidly and it's well
@@ -141,7 +167,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6 mb-3 "><div class="card text-dark">
+            <div class="col-md-3 col-sm-6 mb-3 tof">
+                <div class="card h-100 text-dark">   
                     <div class="card-body">
                         <img src="images/xaviera.jpg" class="img-fluid rounded-circle mb-2" alt="globo">
                         <h3 class="card-title mb-2">Xaviera</h3>
@@ -156,7 +183,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6 mb-3"><div class="card text-dark">
+            <div class="col-md-3 col-sm-6 mb-3 tof">
+                <div class="card h-100 text-dark">        
                     <div class="card-body">
                         <img src="images/Andrea.jpg" class="img-fluid rounded-circle mb-2" alt="globo">
                         <h3 class="card-title mb-2">Andrea</h3>

@@ -172,3 +172,11 @@ a.cump{
     height: 400px!important; 
     width: 300px!important;
 }
+
+.prix{
+    width: 200px!important;
+}
+.pr{
+    width: 100%;
+    height: 100vh;
+}

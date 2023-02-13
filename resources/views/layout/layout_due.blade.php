@@ -37,7 +37,8 @@
 
 <!-- footer mt-auto -->
 <footer class="bg-dark text-white text-center">
-    <p> copyright 2022 &copy Liani Mopi </p>
+    <!-- <p> copyright 2022 &copy Liani Mopi </p> -->
+    <p> copyright 2022 &copy Hubsting </p>
 </footer>
 
 <!-- JavaScript Bundle with Popper -->

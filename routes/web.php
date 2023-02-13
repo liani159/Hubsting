@@ -40,7 +40,7 @@ Route::get('/root', [MainController::class, 'user_home'])->name('home.user');
 
 //Middleware for UserAccess
 //user
-
+ //Users: Middleware -Creation(takes in account all the normal users(Non admin users) actions)
 Route::middleware(['auth', 'user-access:user'])->group(
     function(){
         /* Route::get('/user/home', [MainController::class, 'user_home'])->name('home.user');
@@ -66,6 +66,7 @@ Route::middleware(['auth', 'user-access:user'])->group(
     }
 );
 //general-route
+//common routes used by admins and users
 Route::resource('teams', TeamController::class);
 Route::get('/home/team/{team_id}', [MainController::class, 'team_home'])->name('home.team');
 Route::get('/files/{file}', [MainController::class, 'download'])->name('download');
@@ -81,10 +82,11 @@ Route::get('/members/delete/{id}/{id_team}', [MemberController::class, 'destroy'
 Route::get('/search/{search}', [FileController::class, 'search'])->name('search');
 Route::get('/ricerca/{search}/{teamId}', [FileController::class, 'ricerca'])->name('ricerca');
 
-//pricing
+//pricing: Route to have the price
 Route::get('/pricing', [MainController::class, 'pricing'])->name('pricing');
 
- //admin
+
+ //admin: Middleware -Creation(takes in account all the admin actions)
 Route::middleware(['auth', 'user-access:admin'])->group(
     function(){
         Route::get('/admin/my_space', [MainController::class, 'user_home'])->name('admin.space');
@@ -92,7 +94,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(
         Route::get('/admin/show/users', [AdminController::class, 'show_users'])->name('admin.show_user');
         Route::get('/admin/show/teams_users', [AdminController::class, 'show_teams_users'])->name('admin.show_teams_user');
     
-        Route::get('/admin/delete/{id}', [AdminController::class, 'delete_user_admin'])->name('admin.del');
+        //Route::get('/admin/delete/{id}', [AdminController::class, 'delete_user_admin'])->name('admin.del');
         //just to show the difference between siple user an admin
 /*         Route::get('/admin/home/team/{team_id}', [MainController::class, 'team_home'])->name('home.team');
         Route::get('admin/files/{file}', [MainController::class, 'download'])->name('download'); */

@@ -85,7 +85,8 @@
                     <tr>
                     <th scope="col">Id</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Owner_id</th>
+                    <th scope="col">Owner_name</th>
+                    <th scope="col">Size</th>
                     <th scope="col">Created_at</th>
                     </tr>
                 </thead>
@@ -107,10 +108,11 @@
             serverSide: true,
             ajax: "{{route('admin.show_teams_user')}}",
             columns:[
-                {data:'id_team', name:'id_team'},
-                {data:'nome', name:'nome' },
+                {data:'id', name:'id'},
+                {data:'name', name:'name' },
                 {data:'owner_name', name:'owner_name' },
-                {data:'created_at', name:'created_at'},
+                {data:'total_size_formatted', name:'total_size_formatted'},
+                {data:'created_at_formatted', name:'created_at_formatted'},
             ]
         });
     })

@@ -37,22 +37,37 @@ class AdminController extends Controller
     public function show_teams_users(Request $request){
         $teams = Team::all();
 
-        $results = DB::table('teams')
+        //simple
+        /* $results = DB::table('teams')
             ->join('users', 'teams.owner_id', '=', 'users.id')
             ->select('teams.name as nome', 'teams.id as id_team', 'users.name as owner_name',
                 'teams.created_at as created_at')
-            ->get(); 
-            /* $results = DB::table('teams')
-            ->join('users', 'teams.owner_id', '=', 'users.id')
-            ->leftJoin(DB::raw('(SELECT team_id, SUM(files.size) as size FROM files GROUP BY team_id) as files'), function($join) {
-                $join->on('teams.id', '=', 'files.team_id');
-            })
-            ->select('teams.name as nome', 'teams.id as id_team', 'users.name as owner_name',
-                'teams.created_at as created_at', 'files.size')
-            ->groupBy('teams.owner_id')
-            ->havingRaw('COUNT(teams.owner_id) <= 1')
+            ->get(); */ 
+
+            $results = DB::table('teams')
+            ->leftJoin('files', 'teams.id', '=', 'files.team_id')
+            ->leftJoin('users', 'teams.owner_id', '=', 'users.id')
+            ->selectRaw('teams.*, sum(files.size) as total_size, users.name as owner_name,
+                IF(sum(files.size) >= 1073741824, concat(round(sum(files.size) / 1073741824, 2), " GB"),
+                IF(sum(files.size) >= 1048576, concat(round(sum(files.size) / 1048576, 2), " MB"),
+                IF(sum(files.size) >= 1024, concat(round(sum(files.size) / 1024, 2), " KB"),
+                IF(sum(files.size) > 1, concat(sum(files.size), " octets"),
+                IF(sum(files.size) = 1, "1 octet",
+                "0 octet"))))) as total_size_formatted,
+                DATE_FORMAT(teams.created_at, "%d/%m/%Y") as created_at_formatted')
+            ->groupBy('teams.id')
+            ->get();
+
+            //without conversion
+            /* $results = Team::leftJoin('files', 'teams.id', '=', 'files.team_id')
+            ->leftJoin('users', 'teams.owner_id', '=', 'users.id')
+            ->selectRaw('teams.*, sum(files.size) as total_size, users.name as owner_name')
+            ->groupBy('teams.id')
             ->get(); */
 
+            /* foreach ($results as $result) {
+                echo $result->name. ' cree par '. $result->owner_name . ' a un total de ' . $result->total_size . ' octets de fichiers associés. </br>';
+            } */
 
         //dd($results);
         if($request->ajax()){
